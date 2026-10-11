@@ -1,0 +1,671 @@
+{
+  "generatedAt": "2026-10-11T18:57:14.831Z",
+  "counts": {
+    "available": 19,
+    "placeholder": 35,
+    "optional": 6,
+    "missing": 6
+  },
+  "assets": [
+    {
+      "id": "envelope-backdrop",
+      "status": "available",
+      "requirement": "optional",
+      "kind": "image",
+      "critical": true,
+      "path": "public/assets/storybook/shared/envelope-backdrop.jpg",
+      "size": "1792×2400",
+      "description": "Tileable pattern behind the closed card (tiled and faded by envelope.backdrop)."
+    },
+    {
+      "id": "gate-left",
+      "status": "available",
+      "requirement": "required",
+      "kind": "image",
+      "critical": true,
+      "path": "public/assets/storybook/shared/gate-left.webp",
+      "size": "504×1482",
+      "description": "Gatefold card, left panel front (alpha). Hinge on its left edge."
+    },
+    {
+      "id": "gate-right",
+      "status": "available",
+      "requirement": "required",
+      "kind": "image",
+      "critical": true,
+      "path": "public/assets/storybook/shared/gate-right.webp",
+      "size": "508×1480",
+      "description": "Gatefold card, right panel front (alpha). Hinge on its right edge."
+    },
+    {
+      "id": "gate-seal",
+      "status": "available",
+      "requirement": "required",
+      "kind": "image",
+      "critical": true,
+      "path": "public/assets/storybook/shared/gate-seal.webp",
+      "size": "451×1095",
+      "description": "Medallion seal with tassel (alpha); lifts off before the panels open."
+    },
+    {
+      "id": "invitation-paper",
+      "status": "available",
+      "requirement": "optional",
+      "kind": "image",
+      "critical": true,
+      "path": "public/assets/storybook/shared/invitation-paper.webp",
+      "size": "1143×1602",
+      "description": "Invitation sheet inside the opened card: red peony + koi frame, blank ivory panel for the HTML text."
+    },
+    {
+      "id": "medallion-deco",
+      "status": "available",
+      "requirement": "optional",
+      "kind": "image",
+      "critical": true,
+      "path": "public/assets/storybook/shared/medallion-deco.webp",
+      "size": "1600×1600",
+      "description": "Floral medallion behind the closed card: still layer (alpha)."
+    },
+    {
+      "id": "medallion-ring",
+      "status": "available",
+      "requirement": "optional",
+      "kind": "image",
+      "critical": true,
+      "path": "public/assets/storybook/shared/medallion-ring.webp",
+      "size": "1266×1266",
+      "description": "Medallion lattice ring (alpha), rotates slowly in place."
+    },
+    {
+      "id": "medallion-flower-tl",
+      "status": "available",
+      "requirement": "optional",
+      "kind": "image",
+      "critical": true,
+      "path": "public/assets/storybook/shared/medallion-flower-tl.webp",
+      "size": "186×186",
+      "description": "Medallion flower / sprig (alpha) that sways on its own."
+    },
+    {
+      "id": "medallion-flower-tr",
+      "status": "available",
+      "requirement": "optional",
+      "kind": "image",
+      "critical": true,
+      "path": "public/assets/storybook/shared/medallion-flower-tr.webp",
+      "size": "223×223",
+      "description": "Medallion flower / sprig (alpha) that sways on its own."
+    },
+    {
+      "id": "medallion-flower-left",
+      "status": "available",
+      "requirement": "optional",
+      "kind": "image",
+      "critical": true,
+      "path": "public/assets/storybook/shared/medallion-flower-left.webp",
+      "size": "285×285",
+      "description": "Medallion flower / sprig (alpha) that sways on its own."
+    },
+    {
+      "id": "medallion-flower-bl",
+      "status": "available",
+      "requirement": "optional",
+      "kind": "image",
+      "critical": true,
+      "path": "public/assets/storybook/shared/medallion-flower-bl.webp",
+      "size": "273×273",
+      "description": "Medallion flower / sprig (alpha) that sways on its own."
+    },
+    {
+      "id": "medallion-flower-peony",
+      "status": "available",
+      "requirement": "optional",
+      "kind": "image",
+      "critical": true,
+      "path": "public/assets/storybook/shared/medallion-flower-peony.webp",
+      "size": "441×441",
+      "description": "Medallion flower / sprig (alpha) that sways on its own."
+    },
+    {
+      "id": "medallion-flower-white",
+      "status": "available",
+      "requirement": "optional",
+      "kind": "image",
+      "critical": true,
+      "path": "public/assets/storybook/shared/medallion-flower-white.webp",
+      "size": "135×135",
+      "description": "Medallion flower / sprig (alpha) that sways on its own."
+    },
+    {
+      "id": "medallion-flower-small-l",
+      "status": "available",
+      "requirement": "optional",
+      "kind": "image",
+      "critical": true,
+      "path": "public/assets/storybook/shared/medallion-flower-small-l.webp",
+      "size": "160×160",
+      "description": "Medallion flower / sprig (alpha) that sways on its own."
+    },
+    {
+      "id": "medallion-flower-small-r",
+      "status": "available",
+      "requirement": "optional",
+      "kind": "image",
+      "critical": true,
+      "path": "public/assets/storybook/shared/medallion-flower-small-r.webp",
+      "size": "160×160",
+      "description": "Medallion flower / sprig (alpha) that sways on its own."
+    },
+    {
+      "id": "medallion-sprig-tl",
+      "status": "available",
+      "requirement": "optional",
+      "kind": "image",
+      "critical": true,
+      "path": "public/assets/storybook/shared/medallion-sprig-tl.webp",
+      "size": "208×208",
+      "description": "Medallion flower / sprig (alpha) that sways on its own."
+    },
+    {
+      "id": "medallion-sprig-tr",
+      "status": "available",
+      "requirement": "optional",
+      "kind": "image",
+      "critical": true,
+      "path": "public/assets/storybook/shared/medallion-sprig-tr.webp",
+      "size": "207×207",
+      "description": "Medallion flower / sprig (alpha) that sways on its own."
+    },
+    {
+      "id": "medallion-sprig-bl",
+      "status": "available",
+      "requirement": "optional",
+      "kind": "image",
+      "critical": true,
+      "path": "public/assets/storybook/shared/medallion-sprig-bl.webp",
+      "size": "207×207",
+      "description": "Medallion flower / sprig (alpha) that sways on its own."
+    },
+    {
+      "id": "medallion-sprig-br",
+      "status": "available",
+      "requirement": "optional",
+      "kind": "image",
+      "critical": true,
+      "path": "public/assets/storybook/shared/medallion-sprig-br.webp",
+      "size": "207×207",
+      "description": "Medallion flower / sprig (alpha) that sways on its own."
+    },
+    {
+      "id": "transition-foliage",
+      "status": "placeholder",
+      "requirement": "optional",
+      "kind": "image",
+      "critical": false,
+      "path": "public/assets/storybook/shared/transition-foliage.webp",
+      "size": "2600×1600",
+      "description": "Large foreground foliage used for the Scene 1 → 2 wipe."
+    },
+    {
+      "id": "particles-petals",
+      "status": "placeholder",
+      "requirement": "optional",
+      "kind": "image",
+      "critical": false,
+      "path": "public/assets/storybook/shared/particles-petals.webp",
+      "size": "1600×1000",
+      "description": "Transparent falling petals (atmosphere)."
+    },
+    {
+      "id": "paper-texture",
+      "status": "optional",
+      "requirement": "optional",
+      "kind": "image",
+      "critical": false,
+      "path": "public/assets/storybook/shared/paper-texture.webp",
+      "size": "1024×1024",
+      "description": "Optional tileable paper grain overlay (not used yet)."
+    },
+    {
+      "id": "scene-01-desktop-background",
+      "status": "placeholder",
+      "requirement": "required",
+      "kind": "image",
+      "critical": true,
+      "path": "public/assets/storybook/scenes/scene-01/desktop/scene-01-desktop-background.webp",
+      "size": "2200×1240",
+      "description": "Scene 1 sky + distant mountains, desktop (with camera bleed)."
+    },
+    {
+      "id": "scene-01-mobile-background",
+      "status": "placeholder",
+      "requirement": "required",
+      "kind": "image",
+      "critical": true,
+      "path": "public/assets/storybook/scenes/scene-01/mobile/scene-01-mobile-background.webp",
+      "size": "1240×2200",
+      "description": "Scene 1 sky + distant mountains, mobile portrait composition."
+    },
+    {
+      "id": "scene-01-sun",
+      "status": "placeholder",
+      "requirement": "optional",
+      "kind": "image",
+      "critical": true,
+      "path": "public/assets/storybook/scenes/scene-01/scene-01-sun.webp",
+      "size": "560×560",
+      "description": "Soft sun/moon glow back ornament."
+    },
+    {
+      "id": "scene-01-cloud-left",
+      "status": "placeholder",
+      "requirement": "required",
+      "kind": "image",
+      "critical": true,
+      "path": "public/assets/storybook/scenes/scene-01/scene-01-cloud-left.webp",
+      "size": "720×300",
+      "description": "Back ornament cloud (left)."
+    },
+    {
+      "id": "scene-01-cloud-right",
+      "status": "placeholder",
+      "requirement": "required",
+      "kind": "image",
+      "critical": true,
+      "path": "public/assets/storybook/scenes/scene-01/scene-01-cloud-right.webp",
+      "size": "640×280",
+      "description": "Back ornament cloud (right)."
+    },
+    {
+      "id": "scene-01-desktop-hills",
+      "status": "placeholder",
+      "requirement": "required",
+      "kind": "image",
+      "critical": true,
+      "path": "public/assets/storybook/scenes/scene-01/desktop/scene-01-desktop-hills.webp",
+      "size": "2400×620",
+      "description": "Scene 1 midground hills, desktop."
+    },
+    {
+      "id": "scene-01-mobile-hills",
+      "status": "placeholder",
+      "requirement": "required",
+      "kind": "image",
+      "critical": true,
+      "path": "public/assets/storybook/scenes/scene-01/mobile/scene-01-mobile-hills.webp",
+      "size": "1400×900",
+      "description": "Scene 1 midground hills, mobile."
+    },
+    {
+      "id": "scene-01-tree-left",
+      "status": "placeholder",
+      "requirement": "required",
+      "kind": "image",
+      "critical": true,
+      "path": "public/assets/storybook/scenes/scene-01/scene-01-tree-left.webp",
+      "size": "640×920",
+      "description": "Midground blossom tree (left)."
+    },
+    {
+      "id": "scene-01-tree-right",
+      "status": "placeholder",
+      "requirement": "required",
+      "kind": "image",
+      "critical": true,
+      "path": "public/assets/storybook/scenes/scene-01/scene-01-tree-right.webp",
+      "size": "640×920",
+      "description": "Midground blossom tree (right)."
+    },
+    {
+      "id": "scene-01-lantern-left",
+      "status": "placeholder",
+      "requirement": "optional",
+      "kind": "image",
+      "critical": true,
+      "path": "public/assets/storybook/scenes/scene-01/scene-01-lantern-left.webp",
+      "size": "180×360",
+      "description": "Hanging lantern prop that drops in (left)."
+    },
+    {
+      "id": "scene-01-lantern-right",
+      "status": "placeholder",
+      "requirement": "optional",
+      "kind": "image",
+      "critical": true,
+      "path": "public/assets/storybook/scenes/scene-01/scene-01-lantern-right.webp",
+      "size": "180×360",
+      "description": "Hanging lantern prop that drops in (right)."
+    },
+    {
+      "id": "scene-01-foreground-left",
+      "status": "placeholder",
+      "requirement": "required",
+      "kind": "image",
+      "critical": true,
+      "path": "public/assets/storybook/scenes/scene-01/scene-01-foreground-left.webp",
+      "size": "960×760",
+      "description": "Foreground flowers/leaves framing the left edge."
+    },
+    {
+      "id": "scene-01-foreground-right",
+      "status": "placeholder",
+      "requirement": "required",
+      "kind": "image",
+      "critical": true,
+      "path": "public/assets/storybook/scenes/scene-01/scene-01-foreground-right.webp",
+      "size": "960×760",
+      "description": "Foreground flowers/leaves framing the right edge."
+    },
+    {
+      "id": "scene-01-final-reference",
+      "status": "missing",
+      "requirement": "required",
+      "kind": "reference",
+      "critical": false,
+      "path": "public/assets/storybook/scenes/scene-01/desktop/scene-01-final-reference.jpg",
+      "size": "1920×1080",
+      "description": "Composition reference of the assembled Scene 1 (desktop)."
+    },
+    {
+      "id": "scene-01-mobile-final-reference",
+      "status": "missing",
+      "requirement": "required",
+      "kind": "reference",
+      "critical": false,
+      "path": "public/assets/storybook/scenes/scene-01/mobile/scene-01-mobile-final-reference.jpg",
+      "size": "1080×1920",
+      "description": "Composition reference of the assembled Scene 1 (mobile)."
+    },
+    {
+      "id": "scene-02-desktop-background",
+      "status": "placeholder",
+      "requirement": "required",
+      "kind": "image",
+      "critical": false,
+      "path": "public/assets/storybook/scenes/scene-02/desktop/scene-02-desktop-background.webp",
+      "size": "3000×1300",
+      "description": "Scene 2 wide sky/mountains with extension for the camera journey."
+    },
+    {
+      "id": "scene-02-mobile-background",
+      "status": "placeholder",
+      "requirement": "required",
+      "kind": "image",
+      "critical": false,
+      "path": "public/assets/storybook/scenes/scene-02/mobile/scene-02-mobile-background.webp",
+      "size": "2000×2300",
+      "description": "Scene 2 sky/mountains, mobile framing."
+    },
+    {
+      "id": "scene-02-desktop-midground",
+      "status": "placeholder",
+      "requirement": "required",
+      "kind": "image",
+      "critical": false,
+      "path": "public/assets/storybook/scenes/scene-02/desktop/scene-02-desktop-midground.webp",
+      "size": "4200×640",
+      "description": "Scene 2 rolling hills + path (midground), desktop."
+    },
+    {
+      "id": "scene-02-mobile-midground",
+      "status": "placeholder",
+      "requirement": "required",
+      "kind": "image",
+      "critical": false,
+      "path": "public/assets/storybook/scenes/scene-02/mobile/scene-02-mobile-midground.webp",
+      "size": "2800×1000",
+      "description": "Scene 2 rolling hills + path (midground), mobile."
+    },
+    {
+      "id": "scene-02-house",
+      "status": "placeholder",
+      "requirement": "optional",
+      "kind": "image",
+      "critical": false,
+      "path": "public/assets/storybook/scenes/scene-02/scene-02-house.webp",
+      "size": "620×560",
+      "description": "Small house / destination landmark."
+    },
+    {
+      "id": "scene-02-tree",
+      "status": "placeholder",
+      "requirement": "required",
+      "kind": "image",
+      "critical": false,
+      "path": "public/assets/storybook/scenes/scene-02/scene-02-tree.webp",
+      "size": "540×820",
+      "description": "Roadside tree (reused several times)."
+    },
+    {
+      "id": "scene-02-fence",
+      "status": "placeholder",
+      "requirement": "optional",
+      "kind": "image",
+      "critical": false,
+      "path": "public/assets/storybook/scenes/scene-02/scene-02-fence.webp",
+      "size": "1400×220",
+      "description": "Wooden fence segment."
+    },
+    {
+      "id": "scene-02-foreground-grass",
+      "status": "placeholder",
+      "requirement": "required",
+      "kind": "image",
+      "critical": false,
+      "path": "public/assets/storybook/scenes/scene-02/scene-02-foreground-grass.webp",
+      "size": "5000×380",
+      "description": "Foreground grass strip (fast parallax)."
+    },
+    {
+      "id": "scene-02-foreground-branch",
+      "status": "placeholder",
+      "requirement": "required",
+      "kind": "image",
+      "critical": false,
+      "path": "public/assets/storybook/scenes/scene-02/scene-02-foreground-branch.webp",
+      "size": "1200×640",
+      "description": "Foreground branch occluder (also used to push into Scene 3)."
+    },
+    {
+      "id": "scene-02-final-reference",
+      "status": "missing",
+      "requirement": "required",
+      "kind": "reference",
+      "critical": false,
+      "path": "public/assets/storybook/scenes/scene-02/desktop/scene-02-final-reference.jpg",
+      "size": "1920×1080",
+      "description": "Composition reference with camera start/end frames (desktop)."
+    },
+    {
+      "id": "scene-02-mobile-final-reference",
+      "status": "missing",
+      "requirement": "required",
+      "kind": "reference",
+      "critical": false,
+      "path": "public/assets/storybook/scenes/scene-02/mobile/scene-02-mobile-final-reference.jpg",
+      "size": "1080×1920",
+      "description": "Composition reference with camera start/end frames (mobile)."
+    },
+    {
+      "id": "couple-idle",
+      "status": "placeholder",
+      "requirement": "required",
+      "kind": "spritesheet",
+      "critical": false,
+      "path": "public/assets/storybook/characters/couple-idle.png",
+      "size": "1440×480",
+      "description": "Couple idle loop — 4 frames, 4×1 grid, 360×480 per frame."
+    },
+    {
+      "id": "couple-walk",
+      "status": "placeholder",
+      "requirement": "required",
+      "kind": "spritesheet",
+      "critical": false,
+      "path": "public/assets/storybook/characters/couple-walk.png",
+      "size": "1440×960",
+      "description": "Couple walk cycle — 8 frames, 4×2 grid, 360×480 per frame, facing right."
+    },
+    {
+      "id": "couple-pose",
+      "status": "placeholder",
+      "requirement": "required",
+      "kind": "spritesheet",
+      "critical": false,
+      "path": "public/assets/storybook/characters/couple-pose.png",
+      "size": "1200×1040",
+      "description": "Couple finale pose / wave — 6 frames, 3×2 grid, 400×520 per frame."
+    },
+    {
+      "id": "couple-walk-left",
+      "status": "optional",
+      "requirement": "optional",
+      "kind": "spritesheet",
+      "critical": false,
+      "path": "public/assets/storybook/characters/couple-walk-left.png",
+      "size": "1440×960",
+      "description": "Optional authored left-facing walk (preferred over mirroring asymmetric art)."
+    },
+    {
+      "id": "couple-walk-json",
+      "status": "optional",
+      "requirement": "optional",
+      "kind": "reference",
+      "critical": false,
+      "path": "public/assets/storybook/characters/couple-walk.json",
+      "size": "",
+      "description": "Exporter metadata for the walk sheet (values are copied into characters.config.ts)."
+    },
+    {
+      "id": "scene-03-desktop-background",
+      "status": "placeholder",
+      "requirement": "required",
+      "kind": "image",
+      "critical": false,
+      "path": "public/assets/storybook/scenes/scene-03/desktop/scene-03-desktop-background.webp",
+      "size": "2300×1300",
+      "description": "Finale sky/backdrop, desktop."
+    },
+    {
+      "id": "scene-03-mobile-background",
+      "status": "placeholder",
+      "requirement": "required",
+      "kind": "image",
+      "critical": false,
+      "path": "public/assets/storybook/scenes/scene-03/mobile/scene-03-mobile-background.webp",
+      "size": "1300×2300",
+      "description": "Finale sky/backdrop, mobile."
+    },
+    {
+      "id": "scene-03-glow",
+      "status": "placeholder",
+      "requirement": "optional",
+      "kind": "image",
+      "critical": false,
+      "path": "public/assets/storybook/scenes/scene-03/scene-03-glow.webp",
+      "size": "1000×1000",
+      "description": "Warm glow behind the arch."
+    },
+    {
+      "id": "scene-03-arch",
+      "status": "placeholder",
+      "requirement": "required",
+      "kind": "image",
+      "critical": false,
+      "path": "public/assets/storybook/scenes/scene-03/scene-03-arch.webp",
+      "size": "1100×1060",
+      "description": "Primary decorative structure — floral wedding arch."
+    },
+    {
+      "id": "scene-03-desktop-garden",
+      "status": "placeholder",
+      "requirement": "required",
+      "kind": "image",
+      "critical": false,
+      "path": "public/assets/storybook/scenes/scene-03/desktop/scene-03-desktop-garden.webp",
+      "size": "2500×560",
+      "description": "Finale midground flower bank, desktop."
+    },
+    {
+      "id": "scene-03-mobile-garden",
+      "status": "placeholder",
+      "requirement": "required",
+      "kind": "image",
+      "critical": false,
+      "path": "public/assets/storybook/scenes/scene-03/mobile/scene-03-mobile-garden.webp",
+      "size": "1500×760",
+      "description": "Finale midground flower bank, mobile."
+    },
+    {
+      "id": "scene-03-flowers-left",
+      "status": "placeholder",
+      "requirement": "required",
+      "kind": "image",
+      "critical": false,
+      "path": "public/assets/storybook/scenes/scene-03/scene-03-flowers-left.webp",
+      "size": "900×760",
+      "description": "Finale foreground flowers (left)."
+    },
+    {
+      "id": "scene-03-flowers-right",
+      "status": "placeholder",
+      "requirement": "required",
+      "kind": "image",
+      "critical": false,
+      "path": "public/assets/storybook/scenes/scene-03/scene-03-flowers-right.webp",
+      "size": "900×760",
+      "description": "Finale foreground flowers (right)."
+    },
+    {
+      "id": "scene-03-final-reference",
+      "status": "missing",
+      "requirement": "required",
+      "kind": "reference",
+      "critical": false,
+      "path": "public/assets/storybook/scenes/scene-03/desktop/scene-03-final-reference.jpg",
+      "size": "1920×1080",
+      "description": "Finale composition reference incl. text-safe area (desktop)."
+    },
+    {
+      "id": "scene-03-mobile-final-reference",
+      "status": "missing",
+      "requirement": "required",
+      "kind": "reference",
+      "critical": false,
+      "path": "public/assets/storybook/scenes/scene-03/mobile/scene-03-mobile-final-reference.jpg",
+      "size": "1080×1920",
+      "description": "Finale composition reference incl. text-safe area (mobile)."
+    },
+    {
+      "id": "audio-envelope-open",
+      "status": "optional",
+      "requirement": "optional",
+      "kind": "audio",
+      "critical": false,
+      "path": "public/assets/storybook/audio/envelope-open.mp3",
+      "size": "",
+      "description": "Paper/envelope opening sound (plays only after the user gesture)."
+    },
+    {
+      "id": "audio-footsteps",
+      "status": "optional",
+      "requirement": "optional",
+      "kind": "audio",
+      "critical": false,
+      "path": "public/assets/storybook/audio/footsteps.mp3",
+      "size": "",
+      "description": "Soft footsteps for Scene 2."
+    },
+    {
+      "id": "audio-music",
+      "status": "optional",
+      "requirement": "optional",
+      "kind": "audio",
+      "critical": false,
+      "path": "public/assets/storybook/audio/background-music.mp3",
+      "size": "",
+      "description": "Background music loop."
+    }
+  ]
+}
