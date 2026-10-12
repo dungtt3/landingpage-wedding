@@ -27,7 +27,7 @@ const NAV: NavItem[] = [
  * Part 2 of the site: the regular, scrollable invitation page that follows the
  * storybook intro. Plain React + CSS; it does not depend on the storybook engine.
  */
-export function WeddingLanding({ content }: { content: WeddingContent }) {
+export function WeddingLanding({ content, onCloseCard }: { content: WeddingContent; onCloseCard?: () => void }) {
   const rootRef = useRef<HTMLDivElement>(null);
   useRevealOnScroll(rootRef);
   const couple = `${content.groom.shortName} & ${content.bride.shortName}`;
@@ -49,9 +49,16 @@ export function WeddingLanding({ content }: { content: WeddingContent }) {
           <p className="ld-footer__names">{couple}</p>
           <h2 className="ld-footer__title">{content.closing.title}</h2>
           <p>{content.closing.text}</p>
-          <a className="ld-btn ld-btn--ghost" href="#top">
-            Về đầu trang ↑
-          </a>
+          <div className="ld-footer__actions">
+            {onCloseCard && (
+              <button type="button" className="ld-btn ld-btn--primary" onClick={onCloseCard}>
+                Đóng thiệp <span aria-hidden="true">✉</span>
+              </button>
+            )}
+            <a className="ld-btn ld-btn--ghost" href="#top">
+              Về đầu trang ↑
+            </a>
+          </div>
         </footer>
       </div>
     </div>

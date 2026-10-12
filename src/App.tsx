@@ -42,10 +42,17 @@ export function App() {
     if (!introDone || !window.location.hash) return;
     document.getElementById(window.location.hash.slice(1))?.scrollIntoView({ behavior: 'instant' });
   }, [introDone]);
+  // "Đóng thiệp" at the end of the page: back to the closed card, ready to be opened again.
+  const closeCard = () => {
+    // Drop any #section so reopening does not jump back down the page.
+    if (window.location.hash) history.replaceState(null, '', window.location.pathname + window.location.search);
+    window.scrollTo({ top: 0, behavior: 'instant' });
+    setIntroDone(false);
+  };
   return (
     <main id="top">
       {!introDone && <CardIntro content={invitationCard} onDone={() => setIntroDone(true)} />}
-      <WeddingLanding content={content} />
+      <WeddingLanding content={content} onCloseCard={closeCard} />
     </main>
   );
 }

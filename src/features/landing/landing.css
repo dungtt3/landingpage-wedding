@@ -1286,6 +1286,20 @@
   margin: 0;
 }
 
+.ld-gift__actions {
+  display: grid;
+  gap: 10px;
+  justify-items: center;
+}
+
+/* Saving the QR only helps on a phone (scan it from Photos in the banking app);
+   on a computer the guest scans the screen with their phone instead. */
+@media (hover: hover) and (pointer: fine) {
+  .ld-gift__save {
+    display: none;
+  }
+}
+
 .ld-gift__qr {
   width: 200px;
   height: 200px;
@@ -1404,8 +1418,20 @@
   font-weight: 500;
 }
 
-.ld-footer .ld-btn--ghost {
+.ld-footer__actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 12px;
   margin-top: 16px;
+}
+
+.ld-footer__actions .ld-btn {
+  /* Space between label and icon (flex drops the plain space). */
+  gap: 0.4em;
+}
+
+.ld-footer .ld-btn--ghost {
   color: #f6ece2;
 }
 
@@ -1413,7 +1439,7 @@
   background: rgba(255, 255, 255, 0.1);
 }
 
-.ld-footer a:focus-visible {
+.ld-footer :is(a, button):focus-visible {
   outline-color: #f6ece2;
 }
 
