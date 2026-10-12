@@ -24,6 +24,8 @@ interface Props {
   config?: StorybookConfig;
   manifest?: AssetEntry[];
   content: InvitationContent;
+  /** Called on the tap that starts opening the card. */
+  onOpen?: () => void;
   /** Called once the card has opened and faded away (or could not load): show the page. */
   onDone: () => void;
 }
@@ -34,7 +36,7 @@ interface Props {
  * landing page underneath is revealed and the intro removes itself. No 2.5D
  * scenes are involved, so only the card's own assets are loaded.
  */
-export function CardIntro({ config = storybookConfig, manifest = assetManifest, content, onDone }: Props) {
+export function CardIntro({ config = storybookConfig, manifest = assetManifest, content, onOpen, onDone }: Props) {
   const refs = useMemo(() => new RefRegistry(), []);
   const reducedMotion = useReducedMotion();
   const [state, setState] = useState<StorybookState>('loading');
@@ -47,6 +49,8 @@ export function CardIntro({ config = storybookConfig, manifest = assetManifest, 
   const doneRef = useRef(false);
   const onDoneRef = useRef(onDone);
   onDoneRef.current = onDone;
+  const onOpenRef = useRef(onOpen);
+  onOpenRef.current = onOpen;
 
   const finish = useCallback(() => {
     if (doneRef.current) return;
@@ -111,6 +115,7 @@ export function CardIntro({ config = storybookConfig, manifest = assetManifest, 
   const activate = useCallback(() => {
     if (state !== 'ready') return;
     setState('opening');
+    onOpenRef.current?.();
     tlRef.current?.play(0);
   }, [state]);
 

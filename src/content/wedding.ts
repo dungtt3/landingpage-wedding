@@ -43,14 +43,6 @@ export interface WeddingEvent {
   note?: string;
 }
 
-export interface StoryMilestone {
-  /** Optional: shown above the title when given. */
-  date?: string;
-  title: string;
-  text: string;
-  photo?: string;
-}
-
 export interface Photo {
   src: string;
   alt: string;
@@ -80,9 +72,10 @@ export interface WeddingContent {
   mainEventId: string;
   hero: { eyebrow: string; quote: string; quoteSource?: string; photo: string };
   events: WeddingEvent[];
-  story: StoryMilestone[];
-  /** YouTube video under the love story: any YouTube link (watch, youtu.be, shorts, embed) or the bare id. Empty = no video. */
+  /** The love story section's YouTube video: any YouTube link (watch, youtu.be, shorts, embed) or the bare id. Empty = no video. */
   video: { youtube: string; title: string };
+  /** Background song that starts when the card is opened. Empty `src` = no music. */
+  music: { src: string; title: string };
   gallery: Photo[];
   rsvp: { deadlineLabel: string; note: string };
   wishes: { intro: string; templates: WishTemplate[] };
@@ -152,32 +145,13 @@ export const wedding: WeddingContent = {
       map: 'https://maps.app.goo.gl/JvBtwvUKJE3YDzJM9',
     },
   ],
-  story: [
-    {
-      title: 'Lần đầu gặp gỡ',
-      text: 'Bắt đầu từ một chiếc máy tính cần sửa đến những tin nhắn hỏi thăm mỗi tối...',
-      photo: `${P}/gallery/02.jpg`,
-    },
-    {
-      title: 'Chính thức hẹn hò',
-      text: 'Trò chuyện nhiều hơn, làm nhiều điều cùng nhau hơn rồi chính thức thành một đôi',
-      photo: `${P}/gallery/05.jpg`,
-    },
-    {
-      title: 'Lời cầu hôn',
-      text: 'Sau nhiều năm bên nhau, chúng mình đồng ý cùng nhau viết tiếp câu chuyện tương lai của hai đứa',
-      photo: `${P}/gallery/09.jpg`,
-    },
-    {
-      date: '03.11.2026',
-      title: 'Về chung một nhà',
-      text: 'Ngày 03.11.2026, chúng mình chính thức về chung một nhà. Rất mong có bạn cùng chung vui',
-      photo: `${P}/gallery/15.jpg`,
-    },
-  ],
   video: {
     youtube: 'https://youtu.be/e-TeDs6q2YI',
     title: 'Video cưới của Tuấn Dũng & Thanh Mai',
+  },
+  music: {
+    src: `${P}/audio/hoa-va-vay.mp3`,
+    title: 'Hoa và Váy (Rock ver)',
   },
   // All studio photos are 2:3 portraits; 18 fills the 3-column (and 2-column mobile) grid evenly.
   gallery: [

@@ -1,7 +1,9 @@
 import { useRef } from 'react';
 import { sectionIds, type WeddingContent } from '../../content/wedding';
 import { LandingNav, type NavItem } from './components/LandingNav';
+import { MusicToggle } from './components/MusicToggle';
 import { useRevealOnScroll } from './components/useRevealOnScroll';
+import type { BackgroundMusic } from './lib/music';
 import { CoupleSection } from './sections/CoupleSection';
 import { EventsSection } from './sections/EventsSection';
 import { GallerySection } from './sections/GallerySection';
@@ -9,7 +11,6 @@ import { GiftSection } from './sections/GiftSection';
 import { HeroSection } from './sections/HeroSection';
 import { RsvpSection } from './sections/RsvpSection';
 import { StorySection } from './sections/StorySection';
-import { VideoSection } from './sections/VideoSection';
 import { WishesSection } from './sections/WishesSection';
 import './landing.css';
 
@@ -27,7 +28,18 @@ const NAV: NavItem[] = [
  * Part 2 of the site: the regular, scrollable invitation page that follows the
  * storybook intro. Plain React + CSS; it does not depend on the storybook engine.
  */
-export function WeddingLanding({ content, onCloseCard }: { content: WeddingContent; onCloseCard?: () => void }) {
+export function WeddingLanding({
+  content,
+  music,
+  showMusicToggle,
+  onCloseCard,
+}: {
+  content: WeddingContent;
+  music?: BackgroundMusic;
+  /** Off while the card intro still covers the page. */
+  showMusicToggle?: boolean;
+  onCloseCard?: () => void;
+}) {
   const rootRef = useRef<HTMLDivElement>(null);
   useRevealOnScroll(rootRef);
   const couple = `${content.groom.shortName} & ${content.bride.shortName}`;
@@ -39,8 +51,7 @@ export function WeddingLanding({ content, onCloseCard }: { content: WeddingConte
         <HeroSection content={content} />
         <CoupleSection content={content} />
         <EventsSection content={content} />
-        <StorySection content={content} />
-        <VideoSection content={content} />
+        <StorySection content={content} music={music} />
         <GallerySection content={content} />
         <RsvpSection content={content} />
         <WishesSection content={content} />
@@ -61,6 +72,8 @@ export function WeddingLanding({ content, onCloseCard }: { content: WeddingConte
           </div>
         </footer>
       </div>
+      {/* Outside .ld-card: its container query would pin a fixed button to the card instead of the screen. */}
+      {music && showMusicToggle && <MusicToggle music={music} title={content.music.title} />}
     </div>
   );
 }

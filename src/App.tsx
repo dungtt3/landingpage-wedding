@@ -1,5 +1,6 @@
 import { forGuest, guestName, mainEvent, sectionIds, wedding } from './content/wedding';
 import { WeddingLanding } from './features/landing/WeddingLanding';
+import { BackgroundMusic } from './features/landing/lib/music';
 import { useEffect, useState } from 'react';
 import { CardIntro } from './features/storybook/components/CardIntro';
 import type { InvitationContent } from './features/storybook/components/InvitationOverlay';
@@ -8,6 +9,7 @@ import type { InvitationContent } from './features/storybook/components/Invitati
 const search = typeof window === 'undefined' ? '' : window.location.search;
 const content = forGuest(wedding, search);
 const event = mainEvent(content);
+const music = content.music.src ? new BackgroundMusic(content.music.src) : undefined;
 
 /** Text inside the gatefold card, derived from the same content as the landing page. */
 const invitationCard: InvitationContent = {
@@ -47,12 +49,23 @@ export function App() {
     // Drop any #section so reopening does not jump back down the page.
     if (window.location.hash) history.replaceState(null, '', window.location.pathname + window.location.search);
     window.scrollTo({ top: 0, behavior: 'instant' });
+    music?.stop();
     setIntroDone(false);
   };
   return (
     <main id="top">
-      {!introDone && <CardIntro content={invitationCard} onDone={() => setIntroDone(true)} />}
-      <WeddingLanding content={content} onCloseCard={closeCard} />
+      {!introDone && (
+        <CardIntro
+          content={invitationCard}
+          // Started on the tap that opens the card: browsers only allow sound after one.
+          onOpen={() => music?.start()}
+          onDone={() => {
+            music?.start();
+            setIntroDone(true);
+          }}
+        />
+      )}
+      <WeddingLanding content={content} music={music} showMusicToggle={introDone} onCloseCard={closeCard} />
     </main>
   );
 }
