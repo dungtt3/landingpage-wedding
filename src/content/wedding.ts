@@ -149,7 +149,7 @@ export const wedding: WeddingContent = {
       lunarDate: 'Nhằm ngày 25 tháng 9 năm Bính Ngọ',
       venueName: 'Trung Tâm Tổ Chức Tiệc Cưới, Sự Kiện, Nhà Hàng Duy Tân Vinh',
       address: 'Số 9C - Đường Phượng Hoàng, Phường Trường Vinh, Tỉnh Nghệ An',
-      map: 'Nhà Hàng Duy Tân Vinh, 9C Phượng Hoàng, Vinh, Nghệ An',
+      map: 'https://maps.app.goo.gl/JvBtwvUKJE3YDzJM9',
     },
   ],
   story: [
