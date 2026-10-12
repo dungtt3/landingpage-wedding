@@ -176,7 +176,7 @@ export const wedding: WeddingContent = {
     },
   ],
   video: {
-    youtube: '',
+    youtube: 'https://youtu.be/e-TeDs6q2YI',
     title: 'Video cưới của Tuấn Dũng & Thanh Mai',
   },
   // All studio photos are 2:3 portraits; 18 fills the 3-column (and 2-column mobile) grid evenly.
