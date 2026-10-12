@@ -10,7 +10,7 @@ export interface NavItem {
 /**
  * Sticky section nav at the top of the landing page.
  */
-export function LandingNav({ items, brand }: { items: NavItem[]; brand: string }) {
+export function LandingNav({ items }: { items: NavItem[] }) {
   const [current, setCurrent] = useState<string | null>(null);
 
   useEffect(() => {
@@ -28,9 +28,6 @@ export function LandingNav({ items, brand }: { items: NavItem[]; brand: string }
 
   return (
     <nav className="ld-nav" aria-label="Mục lục thiệp">
-      <a className="ld-nav__brand" href="#top">
-        {brand}
-      </a>
       <ul className="ld-nav__list">
         {items.map((item) => (
           <li key={item.id}>

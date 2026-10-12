@@ -1,5 +1,6 @@
 /** Small line icons for the section nav (24×24, stroke = currentColor). */
 const PATHS = {
+  home: 'M3.5 11 12 4l8.5 7M6 9.5V20h4.5v-5.5h3V20H18V9.5',
   couple:
     'M8 11.5a3 3 0 1 0 0-6 3 3 0 0 0 0 6Zm8 0a3 3 0 1 0 0-6 3 3 0 0 0 0 6ZM2.5 20c.6-3.6 2.8-5.5 5.5-5.5s4.9 1.9 5.5 5.5m-2.5-4.6c1.1-.6 2.4-.9 5-.9 2.7 0 4.9 1.9 5.5 5.5',
   events: 'M4 6.5h16v13.5H4zM4 10.5h16M8.5 3.5v5M15.5 3.5v5M8 14h3m2 0h3m-8 3h3',

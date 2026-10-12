@@ -57,8 +57,8 @@ export function App() {
       {!introDone && (
         <CardIntro
           content={invitationCard}
-          // Started on the tap that opens the card: browsers only allow sound after one.
-          onOpen={() => music?.start()}
+          // Started on the "Tiếp tục" tap itself: browsers only allow sound right after one.
+          onEnter={() => music?.start()}
           onDone={() => {
             music?.start();
             setIntroDone(true);

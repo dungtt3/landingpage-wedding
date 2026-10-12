@@ -10,6 +10,7 @@ function PersonCard({ person }: { person: Person }) {
       <h3 className="ld-person__name">{person.name}</h3>
       <p className="ld-person__family">
         <span className="ld-eyebrow">{person.family}</span>
+        <span>Ông Bà</span>
         <span className="ld-person__parents">{person.father}</span>
         <span className="ld-person__parents">{person.mother}</span>
         <span className="ld-muted">{person.home}</span>

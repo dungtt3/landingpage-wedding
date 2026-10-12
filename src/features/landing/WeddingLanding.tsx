@@ -15,6 +15,7 @@ import { WishesSection } from './sections/WishesSection';
 import './landing.css';
 
 const NAV: NavItem[] = [
+  { id: sectionIds.landing, label: 'Trang chủ', icon: 'home' },
   { id: sectionIds.couple, label: 'Cô dâu & Chú rể', icon: 'couple' },
   { id: sectionIds.events, label: 'Sự kiện', icon: 'events' },
   { id: sectionIds.story, label: 'Chuyện tình', icon: 'story' },
@@ -47,7 +48,7 @@ export function WeddingLanding({
   return (
     <div ref={rootRef} className="ld">
       <div className="ld-card">
-        <LandingNav items={NAV} brand={couple} />
+        <LandingNav items={NAV} />
         <HeroSection content={content} />
         <CoupleSection content={content} />
         <EventsSection content={content} />

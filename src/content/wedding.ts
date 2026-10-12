@@ -16,6 +16,7 @@ export interface Person {
   role: 'Chú rể' | 'Cô dâu';
   /** "Nhà trai" / "Nhà gái". */
   family: string;
+  /** Names only: the page puts "Ông Bà" on the line above them. */
   father: string;
   mother: string;
   /** Family home address. */
@@ -74,7 +75,7 @@ export interface WeddingContent {
   events: WeddingEvent[];
   /** The love story section's YouTube video: any YouTube link (watch, youtu.be, shorts, embed) or the bare id. Empty = no video. */
   video: { youtube: string; title: string };
-  /** Background song that starts when the card is opened. Empty `src` = no music. */
+  /** Background song that starts when the guest taps "Tiếp tục" on the opened card. Empty `src` = no music. */
   music: { src: string; title: string };
   gallery: Photo[];
   rsvp: { deadlineLabel: string; note: string };
@@ -92,18 +93,18 @@ export const wedding: WeddingContent = {
     shortName: 'Tuấn Dũng',
     role: 'Chú rể',
     family: 'Nhà trai',
-    father: 'Ông Trịnh Văn Nghị',
-    mother: 'Bà Đào Thị Kim Nhung',
+    father: 'Trịnh Văn Nghị',
+    mother: 'Đào Thị Kim Nhung',
     home: 'Số 3 - Đường Trần Đăng Dinh, P. Trường Vinh, Tỉnh Nghệ An',
     photo: `${P}/couple/groom.jpg`,
   },
   bride: {
     name: 'Hoàng Thị Thanh Mai',
-    shortName: 'Thanh Mai',
+    shortName: 'Hoàng Mai',
     role: 'Cô dâu',
     family: 'Nhà gái',
-    father: 'Ông Hoàng Đăng Cường',
-    mother: 'Bà Lê Thị Lan',
+    father: 'Hoàng Đăng Cường',
+    mother: 'Lê Thị Lan',
     home: 'TDP Dương Thịnh, Phường Thượng Hồng, Tỉnh Hưng Yên',
     photo: `${P}/couple/bride.jpg`,
   },
@@ -125,7 +126,7 @@ export const wedding: WeddingContent = {
       end: '2026-11-01T19:00:00+07:00',
       timeLabel: '16:00',
       dateLabel: 'Chủ nhật, 01.11.2026',
-      lunarDate: 'Nhằm ngày 23 tháng 9 năm Bính Ngọ',
+      lunarDate: 'Tức ngày 23 tháng 9 năm Bính Ngọ',
       venueName: 'Tư gia nhà gái',
       address: 'TDP Dương Thịnh, Phường Thượng Hồng, Tỉnh Hưng Yên',
       map: 'https://maps.app.goo.gl/xshbMY9ehVv1mTZ97',
@@ -139,7 +140,7 @@ export const wedding: WeddingContent = {
       end: '2026-11-03T14:00:00+07:00',
       timeLabel: '11:00',
       dateLabel: 'Thứ Ba, 03.11.2026',
-      lunarDate: 'Nhằm ngày 25 tháng 9 năm Bính Ngọ',
+      lunarDate: 'Tức ngày 25 tháng 9 năm Bính Ngọ',
       venueName: 'Trung Tâm Tổ Chức Tiệc Cưới, Sự Kiện, Nhà Hàng Duy Tân Vinh',
       address: 'Số 9C - Đường Phượng Hoàng, Phường Trường Vinh, Tỉnh Nghệ An',
       map: 'https://maps.app.goo.gl/JvBtwvUKJE3YDzJM9',
@@ -147,7 +148,7 @@ export const wedding: WeddingContent = {
   ],
   video: {
     youtube: 'https://youtu.be/e-TeDs6q2YI',
-    title: 'Video cưới của Tuấn Dũng & Thanh Mai',
+    title: 'Video cưới của Tuấn Dũng & Hoàng Mai',
   },
   music: {
     src: `${P}/audio/hoa-va-vay.mp3`,

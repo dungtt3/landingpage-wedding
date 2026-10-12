@@ -24,8 +24,8 @@ interface Props {
   config?: StorybookConfig;
   manifest?: AssetEntry[];
   content: InvitationContent;
-  /** Called on the tap that starts opening the card. */
-  onOpen?: () => void;
+  /** Called on the "Tiếp tục" tap (or Escape) that takes the guest on to the page. */
+  onEnter?: () => void;
   /** Called once the card has opened and faded away (or could not load): show the page. */
   onDone: () => void;
 }
@@ -36,7 +36,7 @@ interface Props {
  * landing page underneath is revealed and the intro removes itself. No 2.5D
  * scenes are involved, so only the card's own assets are loaded.
  */
-export function CardIntro({ config = storybookConfig, manifest = assetManifest, content, onOpen, onDone }: Props) {
+export function CardIntro({ config = storybookConfig, manifest = assetManifest, content, onEnter, onDone }: Props) {
   const refs = useMemo(() => new RefRegistry(), []);
   const reducedMotion = useReducedMotion();
   const [state, setState] = useState<StorybookState>('loading');
@@ -49,8 +49,8 @@ export function CardIntro({ config = storybookConfig, manifest = assetManifest, 
   const doneRef = useRef(false);
   const onDoneRef = useRef(onDone);
   onDoneRef.current = onDone;
-  const onOpenRef = useRef(onOpen);
-  onOpenRef.current = onOpen;
+  const onEnterRef = useRef(onEnter);
+  onEnterRef.current = onEnter;
 
   const finish = useCallback(() => {
     if (doneRef.current) return;
@@ -115,17 +115,18 @@ export function CardIntro({ config = storybookConfig, manifest = assetManifest, 
   const activate = useCallback(() => {
     if (state !== 'ready') return;
     setState('opening');
-    onOpenRef.current?.();
     tlRef.current?.play(0);
   }, [state]);
 
   const skip = useCallback(() => {
+    onEnterRef.current?.();
     setWaiting(false);
     tlRef.current?.progress(1);
     finish();
   }, [finish]);
 
   const proceed = useCallback(() => {
+    onEnterRef.current?.();
     setWaiting(false);
     tlRef.current?.play();
   }, []);
