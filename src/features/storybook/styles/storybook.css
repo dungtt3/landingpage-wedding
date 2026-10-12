@@ -8,6 +8,9 @@
   --sb-paper: #fbf5ec;
   --sb-serif: 'Quicksand', 'Nunito', 'Segoe UI', system-ui, sans-serif;
   --sb-script: 'Pacifico', 'Quicksand', cursive;
+  /* Inside sheet: handwritten names and a bold display serif, like the printed card. */
+  --sb-hand: 'Great Vibes', 'Pacifico', cursive;
+  --sb-display: 'Playfair Display', Georgia, serif;
   font-synthesis: none;
   position: relative;
   height: 100vh;
@@ -330,12 +333,27 @@
   -webkit-backface-visibility: hidden;
 }
 
-/* Inner side of a panel, seen once it has swung open. */
+/* Inner side of a panel, seen once it has swung open: cream peony paper
+   (gate-inner.webp), each panel showing a different part of it. Framed like
+   the invitation sheet, only slimmer: a red band at the edge and a fine red
+   rule just inside it. */
 .sb-gate__back {
   transform: rotateY(180deg);
   border-radius: 2px;
-  background: linear-gradient(160deg, #8f1219, #640a10);
-  box-shadow: inset 0 0 0 6px #640a10, inset 0 0 0 7px rgba(240, 201, 135, 0.6);
+  background: #f1eeea url('/assets/storybook/shared/gate-inner.webp') 22% center / cover no-repeat;
+  box-shadow: inset 0 0 0 clamp(4px, 0.9dvh, 8px) #b3161c;
+}
+
+.sb-gate__back::after {
+  content: '';
+  position: absolute;
+  inset: clamp(8px, 1.7dvh, 14px);
+  border: 1px solid #a3121b;
+  pointer-events: none;
+}
+
+.sb-gate__panel + .sb-gate__panel .sb-gate__back {
+  background-position: 78% center;
 }
 
 .sb-gate__seal {
@@ -344,34 +362,57 @@
   filter: drop-shadow(2px 6px 6px rgba(40, 0, 0, 0.45));
 }
 
-/* Inside of the card: the invitation sheet the open panels reveal. The art
-   (peony + koi frame, 囍 at the top) is the background; the text sits in its
-   ivory panel, measured on invitation-paper.webp. */
+/* Inside of the card: the invitation sheet the open panels reveal, in its
+   embroidered frame (InvitationBorder). Text is sized from the card itself
+   (cqh), so phones and desktops get the same layout. */
 .sb-gate__inside {
   position: absolute;
   inset: 0.6% 1% 0.6% 1%;
   border-radius: 3px;
-  background: #8f0d12 center / 100% 100% no-repeat;
-  box-shadow: inset 0 0 0 1px rgba(240, 201, 135, 0.35);
+  overflow: hidden;
+  background: #b3161c;
   color: var(--sb-ink);
   font-family: var(--sb-serif);
   text-align: center;
   line-height: 1.25;
   text-wrap: balance;
-  /* Text is sized from the card itself, so phones and desktops get the same layout. */
   container-type: size;
+}
+
+/* Nothing of the inside may show through before the card is opened (the
+   cover images can paint a moment after they have loaded). */
+.sb-root:is([data-state='loading'], [data-state='ready']) .sb-gate__inside {
+  visibility: hidden;
+}
+
+.sb-gate__border {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
 }
 
 .sb-gate__sheet {
   position: absolute;
-  /* The ivory panel, with room for the koi that swim over its left and right edges. */
-  inset: 16.7% 14.9% 10.6% 16%;
+  inset: 8.5% 11% 9.5%;
   display: grid;
   align-content: center;
   justify-items: center;
-  gap: 0.45em;
-  padding: 0 5%;
-  font-size: 1.95cqh;
+  gap: 0.5em;
+  padding: 0 7%;
+  background: #fffdf8;
+  box-shadow: 0 2px 10px rgba(40, 0, 0, 0.35);
+  font-size: 1.9cqh;
+  font-weight: 500;
+}
+
+/* Thin red rule inside the white sheet, like the printed card. */
+.sb-gate__sheet::before {
+  content: '';
+  position: absolute;
+  inset: 1.6cqh;
+  border: 1px solid #a3121b;
+  pointer-events: none;
 }
 
 /* Vietnamese lettering laid over the spot where the art's original text was
@@ -417,97 +458,104 @@
   transform: translateX(-6%);
 }
 
+.sb-gate__seal-mark {
+  display: grid;
+  place-items: center;
+  width: 1.45em;
+  height: 1.45em;
+  border-radius: 0.22em;
+  background: #a3121b;
+  color: #f0c987;
+  font-size: 2.1em;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.sb-gate__seal-mark--small {
+  margin: 0.45em auto 0.3em;
+  font-size: 0.45em;
+}
+
+.sb-gate__eyebrow {
+  font-size: 1.05em;
+}
+
+/* Guest's name, handwritten into the gap like on a printed card. */
 .sb-gate__to {
   max-width: 100%;
-  font-size: 1.4em;
-  font-weight: 700;
-  line-height: 1.2;
+  font-family: var(--sb-hand);
+  font-size: 2em;
+  line-height: 1.1;
   color: #7a1016;
   overflow-wrap: anywhere;
 }
 
 .sb-gate__line {
-  font-size: 1.05em;
+  font-size: 1em;
+}
+
+.sb-gate__names {
+  display: grid;
+  font-family: var(--sb-hand);
+  font-size: 2.2em;
+  font-weight: 400;
+  line-height: 1.05;
+  white-space: nowrap;
+  color: #1f1416;
 }
 
 .sb-gate__when,
 .sb-gate__where {
   display: grid;
-  gap: 0.15em;
+  justify-items: center;
+  gap: 0.3em;
 }
 
-.sb-gate__when small,
-.sb-gate__where small {
+.sb-gate__when small {
+  font-size: 0.9em;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: #a3121b;
+}
+
+.sb-gate__when strong {
+  padding: 0.25em 0.8em;
+  border-block: 1px solid #a3121b;
+  font-family: var(--sb-display);
+  font-size: 1.3em;
+  font-weight: 800;
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+  text-transform: uppercase;
+  color: #a3121b;
+}
+
+.sb-gate__where strong {
+  font-family: var(--sb-display);
+  font-size: 1.12em;
+  font-weight: 800;
+  line-height: 1.2;
+  text-transform: uppercase;
+  color: #a3121b;
+}
+
+.sb-gate__where em {
+  font-size: 0.85em;
+  font-style: normal;
+  font-weight: 700;
+}
+
+.sb-gate__closing {
+  white-space: pre-line;
+  font-size: 0.95em;
+}
+
+.sb-gate__signoff {
   font-size: 0.85em;
   letter-spacing: 0.14em;
   text-transform: uppercase;
-  color: #a0762f;
+  color: #a3121b;
 }
-
-.sb-gate__when strong,
-.sb-gate__where strong {
-  font-size: 1.05em;
-  font-weight: 700;
-  color: #7a1016;
-}
-
-.sb-gate__when em,
-.sb-gate__where em {
-  font-size: 0.9em;
-  font-style: normal;
-  color: #5a4447;
-}
-
-.sb-gate__families {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 0.4em;
-  /* Use the sheet's side padding too: each parent stays on one line. */
-  width: 110%;
-}
-
-.sb-gate__families > span {
-  display: grid;
-  gap: 0.1em;
-  align-content: start;
-}
-
-.sb-gate__families small {
-  font-size: 1.05em;
-  font-weight: 700;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: #7a1016;
-}
-
-.sb-gate__families strong {
-  font-size: 0.92em;
-  font-weight: 600;
-  white-space: nowrap;
-}
-
-.sb-gate__eyebrow {
-  font-size: 0.9em;
-  letter-spacing: 0.14em;
-  white-space: nowrap;
-  text-transform: uppercase;
-  color: #7a1016;
-}
-
-.sb-gate__names {
-  display: grid;
-  font-size: 1.45em;
-  font-style: italic;
-  font-weight: 500;
-  line-height: 1.1;
-  color: #7a1016;
-}
-
-.sb-gate__amp {
-  font-size: 0.6em;
-  color: #a0762f;
-}
-
 
 .sb-envelope__hint {
   margin: 0;

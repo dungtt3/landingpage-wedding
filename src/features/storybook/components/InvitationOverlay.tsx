@@ -8,12 +8,13 @@ export interface InvitationContent {
   /** Guest's name from the invitation link (`?name=`); shown inside the opening card. */
   recipient?: string;
   eyebrow: string;
-  /** Opening card only: "Tới dự lễ thành hôn của hai con chúng tôi". */
+  /** Opening card only: "Đến dự tiệc thành hôn của hai con chúng tôi". */
   occasion?: string;
-  /** Opening card only: "Rất hân hạnh được đón tiếp". */
+  /** Opening card only: the closing lines (a "
+" starts a new line). */
   closing?: string;
-  /** Opening card only: the families signing the invitation, father and mother on their own lines. */
-  families?: { label: string; father: string; mother: string }[];
+  /** Opening card only: "Trân trọng", the last line. */
+  signoff?: string;
   groom: string;
   bride: string;
   dateISO: string;

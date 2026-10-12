@@ -48,7 +48,6 @@ export const storybookConfig: StorybookConfig = {
       right: 'gate-right',
       seal: 'gate-seal',
       backdrop: 'envelope-backdrop',
-      paper: 'invitation-paper',
     },
     parts: {
       left: { x: 0, y: 0, width: 0.4932, height: 1 },

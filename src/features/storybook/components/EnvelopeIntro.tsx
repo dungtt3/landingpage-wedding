@@ -3,6 +3,7 @@ import { createPetalConfetti, type PetalConfetti } from '../engine/petalConfetti
 import { refKeys } from '../engine/refRegistry';
 import type { EnvelopeConfig, NormRect, StorybookState } from '../engine/sceneTypes';
 import { AssetImage } from './AssetImage';
+import { InvitationBorder } from './InvitationBorder';
 import type { InvitationContent } from './InvitationOverlay';
 import { MedallionBackdrop } from './MedallionBackdrop';
 import { useStorybook } from './StorybookContext';
@@ -18,6 +19,13 @@ interface Props {
 
 const pct = (v: number) => `${v * 100}%`;
 const rectStyle = (r: NormRect): CSSProperties => ({ left: pct(r.x), top: pct(r.y), width: pct(r.width), height: pct(r.height) });
+
+/** "Thứ Ba, 03.11.2026" → "Thứ Ba • 03 . 11 . 2026", the way the date is set on printed cards. */
+function bigDate(label: string) {
+  const [weekday, date] = label.includes(', ') ? label.split(', ') : ['', label];
+  const spaced = date.replaceAll('.', ' . ');
+  return weekday ? `${weekday} • ${spaced}` : spaced;
+}
 
 /**
  * The closed gatefold card on its patterned backdrop. The card is a native
@@ -54,7 +62,6 @@ export function EnvelopeIntro({ config, content, state, progress, reducedMotion,
   const ready = state === 'ready';
   const percent = Math.round(progress * 100);
   const pattern = assets[config.assets.backdrop]?.src;
-  const paper = assets[config.assets.paper]?.src;
 
   return (
     <div ref={refs.ref(refKeys.envelope('root'))} className="sb-envelope" onClick={onTap}>
@@ -87,16 +94,14 @@ export function EnvelopeIntro({ config, content, state, progress, reducedMotion,
             aria-describedby="sb-envelope-hint"
             aria-busy={loading}
           >
-            {/* Revealed when the panels open. Decorative: the same text is in the finale card. */}
-            {/* Revealed when the panels open: the invitation sheet (peony + koi frame); the text sits in its ivory panel.
+            {/* Revealed when the panels open: the invitation sheet in its embroidered frame.
                 Decorative for screen readers: the same details are on the landing page. */}
-            <span
-              ref={refs.ref(refKeys.envelope('inside'))}
-              className="sb-gate__inside"
-              style={paper ? { backgroundImage: `url("${paper}")` } : undefined}
-              aria-hidden="true"
-            >
+            <span ref={refs.ref(refKeys.envelope('inside'))} className="sb-gate__inside" aria-hidden="true">
+              <InvitationBorder />
               <span className="sb-gate__sheet">
+                <span data-inside className="sb-gate__seal-mark">
+                  囍
+                </span>
                 <span data-inside className="sb-gate__eyebrow">
                   {content.eyebrow}
                 </span>
@@ -111,36 +116,27 @@ export function EnvelopeIntro({ config, content, state, progress, reducedMotion,
                   </span>
                 )}
                 <span data-inside className="sb-gate__names">
-                  {content.groom}
-                  <span className="sb-gate__amp">&amp;</span>
-                  {content.bride}
+                  <span>{content.groom}</span>
+                  <span className="sb-gate__seal-mark sb-gate__seal-mark--small">囍</span>
+                  <span>{content.bride}</span>
                 </span>
                 <span data-inside className="sb-gate__when">
-                  <small>Vào lúc</small>
-                  <strong>
-                    {content.timeLabel} · {content.dateLabel}
-                  </strong>
-                  {content.lunarDate && <em>{content.lunarDate}</em>}
+                  <small>Vào hồi: {content.timeLabel.replace(':', 'h')}</small>
+                  <strong>{bigDate(content.dateLabel)}</strong>
+                  {content.lunarDate && <small>{content.lunarDate}</small>}
                 </span>
                 <span data-inside className="sb-gate__where">
-                  <small>Tại</small>
                   <strong>{content.venueName}</strong>
                   <em>{content.venueAddress}</em>
                 </span>
                 {content.closing && (
-                  <span data-inside className="sb-gate__line">
+                  <span data-inside className="sb-gate__line sb-gate__closing">
                     {content.closing}
                   </span>
                 )}
-                {content.families && (
-                  <span data-inside className="sb-gate__families">
-                    {content.families.map((f) => (
-                      <span key={f.label}>
-                        <small>{f.label}</small>
-                        <strong>{f.father}</strong>
-                        <strong>{f.mother}</strong>
-                      </span>
-                    ))}
+                {content.signoff && (
+                  <span data-inside className="sb-gate__signoff">
+                    {content.signoff}
                   </span>
                 )}
               </span>

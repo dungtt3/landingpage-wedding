@@ -1,15 +1,9 @@
-import { useEffect, useState, type CSSProperties, type FormEvent } from 'react';
+import { useEffect, useState, type FormEvent } from 'react';
 import { fillWish, mainEvent, sectionIds, type WeddingContent } from '../../../content/wedding';
 import { Expandable } from '../components/Expandable';
+import { WishCard, WishFall } from '../components/WishFall';
 import { SectionHeading } from '../components/SectionHeading';
-import { ANONYMOUS, cleanWish, timeAgo, WISH_LIMITS, wishStore, type Wish, type WishStore } from '../lib/wishes';
-
-/** Seconds each card takes to drift past: the strip's speed stays the same however many wishes there are. */
-const SECONDS_PER_WISH = 7;
-/** Below this many cards the strip is too short to loop seamlessly, so the list is repeated. */
-const MIN_CARDS = 6;
-/** With fewer wishes than this, a drifting strip would just repeat the same card: they stand still instead. */
-const MIN_TO_DRIFT = 3;
+import { ANONYMOUS, cleanWish, WISH_LIMITS, wishStore, type Wish, type WishStore } from '../lib/wishes';
 
 /** Guestbook: leave a wish (from a ready-made template or your own words) and read everyone's wishes. */
 export function WishesSection({ content, store = wishStore }: { content: WeddingContent; store?: WishStore }) {
@@ -56,11 +50,7 @@ export function WishesSection({ content, store = wishStore }: { content: Wedding
     }
   };
 
-  // The strip holds the list twice and slides by half its width, so the loop has no seam.
-  const list = wishes ?? [];
-  const drift = list.length >= MIN_TO_DRIFT;
-  const lap = drift ? Array.from({ length: Math.ceil(MIN_CARDS / list.length) }, () => list).flat() : list;
-  const cards = drift ? [...lap, ...lap] : list;
+  const reducedMotion = useReducedMotion();
 
   return (
     <section id={sectionIds.wishes} className="ld-section ld-section--tint" aria-labelledby="ld-wishes-title">
@@ -154,24 +144,32 @@ export function WishesSection({ content, store = wishStore }: { content: Wedding
         ) : wishes.length === 0 ? (
           <p className="ld-center ld-muted">Chưa có lời chúc nào. Hãy là người đầu tiên gửi lời chúc nhé!</p>
         ) : (
-          // Drifts slowly sideways; pauses on hover / touch / keyboard focus. Without motion it is a plain scroller.
-          <div className="ld-marquee" data-drift={drift} tabIndex={drift ? 0 : undefined} aria-label="Lời chúc từ mọi người">
-            <ul className="ld-marquee__track" style={{ '--ld-marquee-dur': `${lap.length * SECONDS_PER_WISH}s` } as CSSProperties}>
-              {cards.map((w, i) => (
-                // The second copy only completes the loop visually.
-                <li key={`${w.id}-${i}`} className="ld-wish" aria-hidden={i >= list.length || undefined}>
-                  <p className="ld-wish__message">{w.message}</p>
-                  <p className="ld-wish__meta">
-                    <strong>{w.name || ANONYMOUS}</strong>
-                    {w.side && <span className="ld-wish__side">{w.side === 'groom' ? 'Nhà trai' : 'Nhà gái'}</span>}
-                    <time dateTime={w.createdAt}>{timeAgo(w.createdAt)}</time>
-                  </p>
+          <>
+            {/* Screen readers get the plain list; the falling cards are decoration over it. */}
+            <ul className={reducedMotion ? 'ld-wishlist' : 'ld-visually-hidden'} aria-label="Lời chúc từ mọi người">
+              {wishes.map((w) => (
+                <li key={w.id}>
+                  <WishCard wish={w} />
                 </li>
               ))}
             </ul>
-          </div>
+            {!reducedMotion && <WishFall wishes={wishes} />}
+          </>
         )}
       </div>
     </section>
   );
+}
+
+/** Follows the "reduce motion" system setting, also when it changes while the page is open. */
+function useReducedMotion() {
+  const query = '(prefers-reduced-motion: reduce)';
+  const [reduced, setReduced] = useState(() => typeof window !== 'undefined' && window.matchMedia(query).matches);
+  useEffect(() => {
+    const mq = window.matchMedia(query);
+    const update = () => setReduced(mq.matches);
+    mq.addEventListener('change', update);
+    return () => mq.removeEventListener('change', update);
+  }, []);
+  return reduced;
 }

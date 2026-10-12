@@ -11,19 +11,18 @@ const event = mainEvent(content);
 
 /** Text inside the gatefold card, derived from the same content as the landing page. */
 const invitationCard: InvitationContent = {
-  // `?name=Anh%20Nam` → the guest's name under "Trân trọng kính mời" inside the opening card.
+  // `?name=Anh%20Nam` → the guest's name under "…trân trọng kính mời" inside the opening card.
   recipient: guestName(search) || 'Quý khách',
-  eyebrow: 'Trân trọng kính mời',
-  occasion: 'Tới dự lễ thành hôn của hai con chúng tôi',
-  closing: 'Rất hân hạnh được đón tiếp',
-  // Both families sign the invitation, whichever party the guest is invited to.
-  families: [wedding.groom, wedding.bride].map((p) => ({ label: p.family, father: p.father, mother: p.mother })),
+  eyebrow: 'Gia đình chúng tôi trân trọng kính mời',
+  occasion: 'Đến dự tiệc thành hôn của hai con chúng tôi',
+  closing: 'Sự hiện diện của Quý khách\nlà niềm vinh hạnh lớn đối với gia đình chúng tôi',
+  signoff: 'Trân trọng',
   groom: wedding.groom.name,
   bride: wedding.bride.name,
   dateISO: event.start,
   dateLabel: event.dateLabel,
   timeLabel: event.timeLabel,
-  lunarDate: event.lunarDate && `(${event.lunarDate})`,
+  lunarDate: event.lunarDate,
   venueName: event.venueName,
   venueAddress: event.address,
   primaryAction: { label: 'Mở thiệp mời', href: `#${sectionIds.landing}` },

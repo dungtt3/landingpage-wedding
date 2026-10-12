@@ -379,7 +379,7 @@ export interface EnvelopeConfig {
   /** Closed card width / height. */
   aspect: number;
   /** `paper`: the invitation sheet revealed inside the opened card (text sits in its ivory panel). */
-  assets: { left: string; right: string; seal: string; backdrop: string; paper: string };
+  assets: { left: string; right: string; seal: string; backdrop: string };
   /**
    * Where each cut-out sits inside the closed card box. `panelLabel` is
    * relative to the right panel: the area where the art's original lettering

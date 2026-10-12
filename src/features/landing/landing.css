@@ -1100,114 +1100,144 @@
 }
 
 
-/* Wishes drift slowly from right to left, in a loop (the track holds the list twice). */
-.ld-marquee {
-  overflow: hidden;
-  padding: 6px 0 14px;
-  /* Cards fade in and out at the edges. */
-  -webkit-mask-image: linear-gradient(90deg, transparent, #000 6%, #000 94%, transparent);
-  mask-image: linear-gradient(90deg, transparent, #000 6%, #000 94%, transparent);
-}
-
-.ld-marquee:focus-visible {
-  outline: 2px solid var(--ld-accent);
-  outline-offset: 4px;
-  border-radius: 12px;
-}
-
-.ld-marquee__track {
-  display: flex;
-  gap: 16px;
-  width: max-content;
-  margin: 0;
-  padding: 0;
-  list-style: none;
-}
-
-.ld-marquee__track .ld-wish {
-  flex: none;
-  width: min(320px, 78cqi);
-}
-
-/* Only one or two wishes: they simply stand in the middle. */
-.ld-marquee[data-drift='false'] {
-  -webkit-mask-image: none;
-  mask-image: none;
-}
-
-.ld-marquee[data-drift='false'] .ld-marquee__track {
-  flex-wrap: wrap;
-  justify-content: center;
-  width: auto;
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .ld-marquee[data-drift='true'] .ld-marquee__track {
-    animation: ld-marquee var(--ld-marquee-dur, 60s) linear infinite;
-  }
-
-  .ld-marquee:hover .ld-marquee__track,
-  .ld-marquee:focus-within .ld-marquee__track,
-  .ld-marquee:active .ld-marquee__track {
-    animation-play-state: paused;
-  }
-
-  @keyframes ld-marquee {
-    to {
-      /* Half the track = one full copy of the list, minus half a gap. */
-      transform: translateX(calc(-50% - 8px));
-    }
-  }
-}
-
-/* Reduced motion: no drifting, swipe / scroll through the cards instead. */
-@media (prefers-reduced-motion: reduce) {
-  .ld-marquee {
-    overflow-x: auto;
-  }
-}
-
-.ld-wish {
+/* Wishes fall like petals (WishFall.tsx). Each card falls from above the
+   area to below it (100cqh = the area's height) while swaying side to side. */
+.ld-wishfall {
   position: relative;
-  padding: 20px 20px 16px 46px;
-  border-radius: 16px;
-  background: var(--ld-card);
-  box-shadow: inset 0 0 0 1px var(--ld-accent-soft);
+  height: clamp(460px, 72vh, 620px);
+  overflow: hidden;
+  container-type: size;
+  /* Cards fade in at the top and out at the bottom. */
+  -webkit-mask-image: linear-gradient(transparent, #000 10%, #000 88%, transparent);
+  mask-image: linear-gradient(transparent, #000 10%, #000 88%, transparent);
+  touch-action: pan-y;
 }
 
-/* Opening quote mark. */
-.ld-wish::before {
-  content: '“';
+.ld-drop {
+  cursor: default;
+  --w: min(260px, 64cqi);
   position: absolute;
-  left: 14px;
-  top: 4px;
-  font-size: 48px;
-  line-height: 1;
-  color: var(--ld-accent);
-  opacity: 0.5;
+  top: 0;
+  left: calc((100% - var(--w)) * var(--lane));
+  width: var(--w);
+  animation: ld-fall var(--fall) linear var(--delay) both;
 }
 
-.ld-wish__message {
+.ld-drop__sway {
+  animation: ld-sway var(--sway) ease-in-out var(--delay) infinite alternate;
+}
+
+/* The card under the mouse (or tapped, on touch) stops to be read; the rest keep falling. */
+.ld-drop:is(:hover, [data-held='true']) {
+  z-index: 1;
+}
+
+.ld-drop:is(:hover, [data-held='true']),
+.ld-drop:is(:hover, [data-held='true']) .ld-drop__sway {
+  animation-play-state: paused;
+}
+
+.ld-drop:is(:hover, [data-held='true']) .ld-paper-wish {
+  box-shadow:
+    inset 0 0 0 4px #fffaf0,
+    inset 0 0 0 5px rgba(179, 22, 28, 0.45),
+    0 16px 30px rgba(61, 43, 47, 0.3);
+}
+
+@keyframes ld-fall {
+  from {
+    transform: translateY(-100%);
+  }
+  to {
+    transform: translateY(100cqh);
+  }
+}
+
+@keyframes ld-sway {
+  from {
+    transform: translateX(-18px) rotate(calc(var(--tilt) * -7deg));
+  }
+  to {
+    transform: translateX(18px) rotate(calc(var(--tilt) * 6deg));
+  }
+}
+
+.ld-wishfall__hint {
+  position: absolute;
+  bottom: 6%;
+  left: 0;
+  right: 0;
+  z-index: 1;
   margin: 0;
+  text-align: center;
+  font-size: 14px;
+  font-style: italic;
+  color: var(--ld-ink-soft);
+  pointer-events: none;
+}
+
+/* A wish on a little card: cream paper, red border with a fine inner rule. */
+.ld-paper-wish {
+  position: relative;
+  padding: 22px 18px 14px;
+  border: 2px solid #b3161c;
+  border-radius: 6px;
+  background: #fffaf0;
+  box-shadow:
+    inset 0 0 0 4px #fffaf0,
+    inset 0 0 0 5px rgba(179, 22, 28, 0.45),
+    0 10px 22px rgba(61, 43, 47, 0.2);
+  text-align: center;
+}
+
+/* Little red 囍 tab at the top of the card. */
+.ld-paper-wish::before {
+  content: '囍';
+  position: absolute;
+  top: -12px;
+  left: 50%;
+  translate: -50% 0;
+  display: grid;
+  place-items: center;
+  width: 24px;
+  height: 24px;
+  border-radius: 5px;
+  background: #b3161c;
+  color: #f0c987;
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.ld-paper-wish p {
+  margin: 0;
+}
+
+.ld-paper-wish__message {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 7;
+  overflow: hidden;
+  font-size: 16px;
+  line-height: 1.45;
   white-space: pre-line;
   overflow-wrap: anywhere;
 }
 
-.ld-wish__meta {
+.ld-paper-wish__meta {
   display: flex;
   flex-wrap: wrap;
+  justify-content: center;
   align-items: baseline;
-  gap: 4px 10px;
-  margin: 10px 0 0;
+  gap: 4px 8px;
+  margin-top: 10px !important;
   font-size: 15px;
-  color: var(--ld-ink-soft);
 }
 
-.ld-wish__meta strong {
-  color: var(--ld-ink);
+.ld-paper-wish__meta strong {
+  color: #b3161c;
 }
 
-.ld-wish__side {
+.ld-paper-wish__side {
   padding: 1px 8px;
   border-radius: 999px;
   background: var(--ld-accent-soft);
@@ -1215,11 +1245,22 @@
   font-size: 13px;
 }
 
-.ld-wish__meta time {
-  margin-left: auto;
-  font-style: italic;
+/* Reduced motion: the cards side by side, swipe / scroll through them. */
+.ld-wishlist {
+  display: flex;
+  gap: 16px;
+  margin: 0;
+  padding: 16px 4px 12px;
+  list-style: none;
+  overflow-x: auto;
+  scroll-snap-type: x proximity;
 }
 
+.ld-wishlist li {
+  flex: none;
+  width: min(280px, 78cqi);
+  scroll-snap-align: center;
+}
 
 /* ---------------------------------------------------------------- gifts */
 
