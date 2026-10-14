@@ -151,8 +151,8 @@ export const wedding: WeddingContent = {
     title: 'Video cưới của Tuấn Dũng & Hoàng Mai',
   },
   music: {
-    src: `${P}/audio/hoa-va-vay.mp3`,
-    title: 'Hoa và Váy (Rock ver)',
+    src: `${P}/audio/lo-thuong-nhau.mp3`,
+    title: 'Lỡ Thương Nhau',
   },
   // All studio photos are 2:3 portraits; 18 fills the 3-column (and 2-column mobile) grid evenly.
   gallery: [
