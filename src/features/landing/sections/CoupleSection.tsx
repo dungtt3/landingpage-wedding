@@ -22,7 +22,7 @@ function PersonCard({ person }: { person: Person }) {
 export function CoupleSection({ content }: { content: WeddingContent }) {
   return (
     <section id={sectionIds.couple} className="ld-section" aria-labelledby="ld-couple-title">
-      <SectionHeading id="ld-couple-title" eyebrow="Hai nhà trân trọng báo tin" title="Cô dâu & Chú rể" />
+      <SectionHeading id="ld-couple-title" eyebrow="Hai nhà trân trọng báo tin" title="Chú rể & Cô dâu" />
       <div className="ld-couple">
         <PersonCard person={content.groom} />
         <span className="ld-couple__heart" aria-hidden="true">

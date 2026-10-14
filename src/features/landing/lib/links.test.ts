@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { forGuest, guestEvent, guestName, guestSide, mainEvent, wedding } from '../../../content/wedding';
+import { forGuest, guestEvent, guestEvents, guestName, guestSide, mainEvent, wedding } from '../../../content/wedding';
 import { countdownParts, googleCalendarUrl, mapsUrl, toCalendarStamp, youtubeId } from './links';
 
 describe('landing helpers', () => {
@@ -37,6 +37,13 @@ describe('landing helpers', () => {
     expect(guestSide(wedding, '?place=2')).toBe('groom');
     expect(guestSide(wedding, '?place=9')).toBe('both');
     expect(guestSide(wedding, '')).toBe('both');
+  });
+
+  it("shows only the guest's own event with a valid ?place=, every event otherwise", () => {
+    expect(guestEvents(wedding, '?place=1').map((e) => e.id)).toEqual(['bride-party']);
+    expect(guestEvents(wedding, '?place=2').map((e) => e.id)).toEqual(['groom-party']);
+    expect(guestEvents(wedding, '?place=9')).toEqual(wedding.events);
+    expect(guestEvents(wedding, '')).toEqual(wedding.events);
   });
 
   it('reads the guest name from ?name= in any letter case', () => {

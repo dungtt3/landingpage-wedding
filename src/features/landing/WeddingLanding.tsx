@@ -16,7 +16,7 @@ import './landing.css';
 
 const NAV: NavItem[] = [
   { id: sectionIds.landing, label: 'Trang chủ', icon: 'home' },
-  { id: sectionIds.couple, label: 'Cô dâu & Chú rể', icon: 'couple' },
+  { id: sectionIds.couple, label: 'Chú rể & Cô dâu', icon: 'couple' },
   { id: sectionIds.events, label: 'Sự kiện', icon: 'events' },
   { id: sectionIds.story, label: 'Chuyện tình', icon: 'story' },
   { id: sectionIds.gallery, label: 'Album', icon: 'gallery' },

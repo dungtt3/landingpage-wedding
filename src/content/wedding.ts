@@ -115,22 +115,9 @@ export const wedding: WeddingContent = {
     quoteSource: 'Antoine de Saint-Exupéry',
     photo: `${P}/hero.jpg`,
   },
+  // Groom's side first, like everywhere else on the page (`place` keeps the invitation links stable).
   // End times are not on the invitation; they only set the calendar entry length (3 h).
   events: [
-    {
-      id: 'bride-party',
-      place: 1,
-      side: 'bride',
-      title: 'Tiệc Cưới Nhà Gái',
-      start: '2026-11-01T16:00:00+07:00',
-      end: '2026-11-01T19:00:00+07:00',
-      timeLabel: '16:00',
-      dateLabel: 'Chủ nhật, 01.11.2026',
-      lunarDate: 'Tức ngày 23 tháng 9 năm Bính Ngọ',
-      venueName: 'Tư gia nhà gái',
-      address: 'TDP Dương Thịnh, Phường Thượng Hồng, Tỉnh Hưng Yên',
-      map: 'https://maps.app.goo.gl/xshbMY9ehVv1mTZ97',
-    },
     {
       id: 'groom-party',
       place: 2,
@@ -144,6 +131,20 @@ export const wedding: WeddingContent = {
       venueName: 'Trung Tâm Tổ Chức Tiệc Cưới, Sự Kiện, Nhà Hàng Duy Tân Vinh',
       address: 'Số 9C - Đường Phượng Hoàng, Phường Trường Vinh, Tỉnh Nghệ An',
       map: 'https://maps.app.goo.gl/JvBtwvUKJE3YDzJM9',
+    },
+    {
+      id: 'bride-party',
+      place: 1,
+      side: 'bride',
+      title: 'Tiệc Cưới Nhà Gái',
+      start: '2026-11-01T16:00:00+07:00',
+      end: '2026-11-01T19:00:00+07:00',
+      timeLabel: '16:00',
+      dateLabel: 'Chủ nhật, 01.11.2026',
+      lunarDate: 'Tức ngày 23 tháng 9 năm Bính Ngọ',
+      venueName: 'Tư gia nhà gái',
+      address: 'TDP Dương Thịnh, Phường Thượng Hồng, Tỉnh Hưng Yên',
+      map: 'https://maps.app.goo.gl/xshbMY9ehVv1mTZ97',
     },
   ],
   video: {
@@ -180,7 +181,7 @@ export const wedding: WeddingContent = {
     note: 'Sự hiện diện của bạn là niềm vui lớn nhất của chúng mình.',
   },
   wishes: {
-    intro: 'Để lại đôi lời chúc phúc cho cô dâu chú rể. Chọn nhanh một lời chúc có sẵn bên dưới, hoặc tự viết theo cách của bạn.',
+    intro: 'Để lại đôi lời chúc phúc cho chú rể và cô dâu. Chọn nhanh một lời chúc có sẵn bên dưới, hoặc tự viết theo cách của bạn.',
     templates: [
       { label: 'Trăm năm hạnh phúc', text: 'Chúc {groom} và {bride} trăm năm hạnh phúc, đầu bạc răng long, sớm đón thiên thần nhỏ nhé!' },
       {
@@ -188,7 +189,7 @@ export const wedding: WeddingContent = {
         text: 'Chúc mừng hạnh phúc hai bạn! Mong hai bạn luôn yêu thương, thấu hiểu và cùng nhau đi hết chặng đường dài phía trước.',
       },
       { label: 'Tổ ấm bình an', text: 'Chúc tổ ấm nhỏ của {groom} và {bride} luôn ngập tràn tiếng cười, bình an và ấm áp.' },
-      { label: 'Bách niên giai lão', text: 'Chúc cô dâu chú rể bách niên giai lão, sắt son một lòng, hạnh phúc viên mãn.' },
+      { label: 'Bách niên giai lão', text: 'Chúc chú rể và cô dâu bách niên giai lão, sắt son một lòng, hạnh phúc viên mãn.' },
       {
         label: 'Mãi như hôm nay',
         text: 'Thật vui khi được chứng kiến ngày trọng đại của hai bạn. Chúc hai bạn mãi hạnh phúc như ngày hôm nay!',
@@ -242,6 +243,13 @@ export function mainEvent(content: WeddingContent): WeddingEvent {
 export function guestEvent(content: WeddingContent, search: string): WeddingEvent {
   const place = Number(new URLSearchParams(search).get('place'));
   return content.events.find((e) => e.place === place) ?? mainEvent(content);
+}
+
+/** The events to show this guest: only theirs with a valid `?place=`, otherwise all of them. */
+export function guestEvents(content: WeddingContent, search: string): WeddingEvent[] {
+  const place = Number(new URLSearchParams(search).get('place'));
+  const own = content.events.filter((e) => e.place === place);
+  return own.length ? own : content.events;
 }
 
 /** Whose guest this is, from `?place=`: that event's side, or 'both' without a valid place. */

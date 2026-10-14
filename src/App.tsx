@@ -5,7 +5,7 @@ import { useEffect, useState } from 'react';
 import { CardIntro } from './features/storybook/components/CardIntro';
 import type { InvitationContent } from './features/storybook/components/InvitationOverlay';
 
-// `?place=1` (nhà gái) / `?place=2` (nhà trai) picks which party this guest is invited to.
+// `?place=2` (nhà trai) / `?place=1` (nhà gái) picks which party this guest is invited to.
 const search = typeof window === 'undefined' ? '' : window.location.search;
 const content = forGuest(wedding, search);
 const event = mainEvent(content);

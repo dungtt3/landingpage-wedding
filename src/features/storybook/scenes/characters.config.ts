@@ -8,7 +8,7 @@ import type { CharacterDefinition } from '../engine/sceneTypes';
 export const characters: Record<string, CharacterDefinition> = {
   couple: {
     id: 'couple',
-    label: 'Cô dâu & chú rể',
+    label: 'Chú rể & cô dâu',
     animations: {
       idle: {
         kind: 'sheet',
