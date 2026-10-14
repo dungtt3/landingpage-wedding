@@ -215,8 +215,8 @@ export const wedding: WeddingContent = {
   gifts: {
     intro: 'Nếu bạn muốn gửi lời chúc kèm quà mừng, chúng mình xin trân trọng cảm ơn.',
     accounts: [
-      { owner: 'TRINH TUAN DUNG', bank: 'Tên ngân hàng', number: '0000 0000 0000', qr: `${P}/gift/groom-qr.png` },
-      { owner: 'HOANG THANH MAI', bank: 'Tên ngân hàng', number: '0000 0000 0000', qr: `${P}/gift/bride-qr.png` },
+      { owner: 'TRINH TUAN DUNG', bank: 'MB Bank', number: '7190 1389 58888', qr: `${P}/gift/groom-qr.png` },
+      { owner: 'HOANG THI THANH MAI', bank: 'MB Bank', number: '0000 1170 71998', qr: `${P}/gift/bride-qr.png` },
     ],
   },
   closing: {
