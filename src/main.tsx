@@ -1,6 +1,7 @@
 import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
 import { Analytics } from '@vercel/analytics/react';
+import { SpeedInsights } from '@vercel/speed-insights/react';
 import { App } from './App';
 // Fonts are bundled and served from this site (no fonts.googleapis.com, which some networks block or slow down).
 // Each file declares every subset with `unicode-range`, so a browser only downloads the Vietnamese/Latin ones it needs.
@@ -18,5 +19,6 @@ createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <App />
     <Analytics />
+    <SpeedInsights />
   </StrictMode>,
 );
