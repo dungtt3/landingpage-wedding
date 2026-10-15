@@ -100,7 +100,7 @@ export function GallerySection({ content }: { content: WeddingContent }) {
                   else setActive(i);
                 }}
               >
-                <Photo src={p.src} alt={isCurrent ? p.alt : ''} priority={Math.abs(d) <= 1} />
+                <Photo src={p.src} alt={isCurrent ? p.alt : ''} sizes="(max-width: 600px) 60vw, 310px" />
               </button>
             );
           })}
@@ -126,7 +126,7 @@ export function GallerySection({ content }: { content: WeddingContent }) {
                 aria-label={`Ảnh ${i + 1}`}
                 onClick={() => setActive(i)}
               >
-                <Photo src={p.src} alt="" />
+                <Photo src={p.src} alt="" sizes="60px" />
               </button>
             </li>
           ))}
@@ -137,7 +137,7 @@ export function GallerySection({ content }: { content: WeddingContent }) {
         {zoomed && (
           <>
             <figure className="ld-lightbox__figure">
-              <Photo src={current.src} alt={current.alt} priority />
+              <Photo src={current.src} alt={current.alt} sizes="min(48vh, 460px)" priority />
               <figcaption>
                 {current.alt} · {active + 1}/{photos.length}
               </figcaption>

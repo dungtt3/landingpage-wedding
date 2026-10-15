@@ -7,7 +7,7 @@ Summary: ✅ available: 19 · 🟨 placeholder: 35 · ⚪ optional: 6 · ❌ mis
 
 | Status | Asset id | Req. | Critical | Export size | Path | Description |
 |---|---|---|---|---|---|---|
-| ✅ available | `envelope-backdrop` | optional | yes | 1792×2400 | `public/assets/storybook/shared/envelope-backdrop.jpg` | Tileable pattern behind the closed card (tiled and faded by envelope.backdrop). |
+| ✅ available | `envelope-backdrop` | optional | yes | 840×1125 | `public/assets/storybook/shared/envelope-backdrop.webp` | Tileable pattern behind the closed card (tiled and faded by envelope.backdrop). |
 | ✅ available | `gate-left` | required | yes | 504×1482 | `public/assets/storybook/shared/gate-left.webp` | Gatefold card, left panel front (alpha). Hinge on its left edge. |
 | ✅ available | `gate-right` | required | yes | 508×1480 | `public/assets/storybook/shared/gate-right.webp` | Gatefold card, right panel front (alpha). Hinge on its right edge. |
 | ✅ available | `gate-seal` | required | yes | 451×1095 | `public/assets/storybook/shared/gate-seal.webp` | Medallion seal with tassel (alpha); lifts off before the panels open. |

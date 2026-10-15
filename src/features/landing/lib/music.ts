@@ -49,23 +49,34 @@ export class BackgroundMusic {
     if (!this.mutedByGuest) this.play();
   }
 
+  /** Starts downloading the song (call when the guest taps the card) so it can play at once on "Tiếp tục". */
+  prepare() {
+    // load() inside the tap: iOS ignores `preload` until the page has had one.
+    if (!this.audio) this.element()?.load();
+  }
+
   /** The card was closed: silence until it is opened again. */
   stop() {
     this.heldByVideo = false;
     this.audio?.pause();
   }
 
-  private play() {
-    if (!this.src) return;
+  private element() {
+    if (!this.src) return null;
     if (!this.audio) {
       this.audio = new Audio(this.src);
+      this.audio.preload = 'auto';
       this.audio.loop = true;
       this.audio.volume = 0.6;
       const emit = () => this.listeners.forEach((l) => l());
       this.audio.addEventListener('play', emit);
       this.audio.addEventListener('pause', emit);
     }
+    return this.audio;
+  }
+
+  private play() {
     // Rejected when the browser wants a tap first; the toggle then shows "off".
-    this.audio.play().catch(() => {});
+    this.element()?.play().catch(() => {});
   }
 }

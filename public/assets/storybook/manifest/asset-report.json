@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-11T18:57:14.831Z",
+  "generatedAt": "2026-10-15T03:37:59.667Z",
   "counts": {
     "available": 19,
     "placeholder": 35,
@@ -13,8 +13,8 @@
       "requirement": "optional",
       "kind": "image",
       "critical": true,
-      "path": "public/assets/storybook/shared/envelope-backdrop.jpg",
-      "size": "1792×2400",
+      "path": "public/assets/storybook/shared/envelope-backdrop.webp",
+      "size": "840×1125",
       "description": "Tileable pattern behind the closed card (tiled and faded by envelope.backdrop)."
     },
     {

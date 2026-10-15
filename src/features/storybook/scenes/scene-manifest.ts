@@ -53,7 +53,7 @@ const MEDALLION_SPRITES: [string, number][] = [
 
 export const assetManifest: AssetEntry[] = [
   /* ---------------------------------------------------------- shared intro */
-  entry('envelope-backdrop', 'shared/envelope-backdrop.jpg', 'image', 'optional', [1792, 2400],
+  entry('envelope-backdrop', 'shared/envelope-backdrop.webp', 'image', 'optional', [840, 1125],
     'Tileable pattern behind the closed card (tiled and faded by envelope.backdrop).', null, true),
   entry('gate-left', 'shared/gate-left.webp', 'image', 'required', [504, 1482],
     'Gatefold card, left panel front (alpha). Hinge on its left edge.',

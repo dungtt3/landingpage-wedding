@@ -30,7 +30,9 @@ name inside the opening card ("Kính gửi Anh Nam") and pre-fill the RSVP name.
 **All copy for both parts lives in `src/content/wedding.ts`.** `App.tsx`
 derives the text inside the opening card from it. Landing photos go in `public/assets/landing/`
 at the paths listed in that file; a missing photo shows a labelled
-`PLACEHOLDER` box with its expected path.
+`PLACEHOLDER` box with its expected path. Photos are WebP; next to each
+`name.webp` (1280 px wide) put `name-960.webp` and `name-480.webp` and
+`<Photo>` serves the smallest one that fits the screen (`srcset`).
 
 **Backend: Supabase.** RSVPs and the guestbook (`#loi-chuc`, 10 ready-made
 wishes in `wishes.templates` of `src/content/wedding.ts`) are stored in Supabase
@@ -177,7 +179,7 @@ shown inside the open card. The script prints the part rects; they go in
 export the three parts yourself with the same roles (or adapt the measurements
 in the script) and update those numbers. The inside greeting is HTML, styled in
 `storybook.css` (`.sb-gate__inside`), with text taken from the finale card
-content. The backdrop is the tiled pattern `envelope-backdrop.jpg`
+content. The backdrop is the tiled pattern `envelope-backdrop.webp`
 (`envelope.backdrop`: colour, tile size, opacity).
 
 Behind the card sits a floral paper-cut medallion (`MedallionBackdrop`), cut

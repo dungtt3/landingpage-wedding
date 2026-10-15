@@ -15,23 +15,39 @@ export function StorySection({ content, music }: { content: WeddingContent; musi
     const iframe = iframeRef.current;
     if (!iframe || !music) return;
     let cancelled = false;
-    loadYouTubeApi()
-      .then((YT) => {
-        if (cancelled) return;
-        new YT.Player(iframe, {
-          events: {
-            onStateChange: ({ data }) => {
-              if (cancelled) return;
-              if (data === YT.PlayerState.PLAYING || data === YT.PlayerState.BUFFERING) music.holdForVideo();
-              else music.releaseFromVideo();
+    const connect = () =>
+      loadYouTubeApi()
+        .then((YT) => {
+          if (cancelled) return;
+          new YT.Player(iframe, {
+            events: {
+              onStateChange: ({ data }) => {
+                if (cancelled) return;
+                if (data === YT.PlayerState.PLAYING || data === YT.PlayerState.BUFFERING) music.holdForVideo();
+                else music.releaseFromVideo();
+              },
             },
-          },
-        });
-      })
-      .catch(() => {});
+          });
+        })
+        .catch(() => {});
+    // The API script is only fetched once the video is close: it must not compete with the card and photos.
+    if (!('IntersectionObserver' in window)) connect();
+    const observer =
+      'IntersectionObserver' in window
+        ? new IntersectionObserver(
+            (entries) => {
+              if (!entries.some((e) => e.isIntersecting)) return;
+              observer?.disconnect();
+              connect();
+            },
+            { rootMargin: '600px 0px' },
+          )
+        : null;
+    observer?.observe(iframe);
     // No player.destroy(): it would remove the iframe React owns.
     return () => {
       cancelled = true;
+      observer?.disconnect();
     };
   }, [id, music]);
 
@@ -60,6 +76,13 @@ export function StorySection({ content, music }: { content: WeddingContent; musi
           allowFullScreen
         />
       </div>
+      {/* Some networks block YouTube embeds: the app or youtube.com may still open. */}
+      <p className="ld-video__fallback ld-muted">
+        Không xem được video?{' '}
+        <a href={`https://www.youtube.com/watch?v=${id}`} target="_blank" rel="noreferrer">
+          Mở trên YouTube
+        </a>
+      </p>
     </section>
   );
 }

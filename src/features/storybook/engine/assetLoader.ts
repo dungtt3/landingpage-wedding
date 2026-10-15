@@ -94,6 +94,9 @@ export class AssetLoader {
   }
 }
 
+/** Longest wait for `img.decode()` once the file itself has loaded. */
+const DECODE_WAIT_MS = 1500;
+
 function decodeImage(src: string, timeoutMs: number): Promise<void> {
   return new Promise((resolve, reject) => {
     const img = new Image();
@@ -102,7 +105,9 @@ function decodeImage(src: string, timeoutMs: number): Promise<void> {
     img.onload = () => {
       window.clearTimeout(timer);
       // decode() avoids a decode hitch on first paint; ignore browsers that reject it.
-      (img.decode ? img.decode().catch(() => undefined) : Promise.resolve()).then(() => resolve());
+      // Some (older iOS Safari, in-app browsers) never settle it: the image is loaded, so stop waiting after a moment.
+      const decoded = img.decode ? img.decode().catch(() => undefined) : Promise.resolve();
+      Promise.race([decoded, new Promise((r) => window.setTimeout(r, DECODE_WAIT_MS))]).then(() => resolve());
     };
     img.onerror = () => {
       window.clearTimeout(timer);

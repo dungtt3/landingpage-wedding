@@ -5,7 +5,7 @@ import { SectionHeading } from '../components/SectionHeading';
 function PersonCard({ person }: { person: Person }) {
   return (
     <article className="ld-person" data-reveal-on-scroll>
-      <Photo className="ld-person__photo" src={person.photo} alt={`Ảnh ${person.role.toLowerCase()} ${person.name}`} />
+      <Photo className="ld-person__photo" src={person.photo} alt={`Ảnh ${person.role.toLowerCase()} ${person.name}`} sizes="(max-width: 700px) 90vw, 420px" />
       <p className="ld-eyebrow">{person.role}</p>
       <h3 className="ld-person__name">{person.name}</h3>
       <p className="ld-person__family">
