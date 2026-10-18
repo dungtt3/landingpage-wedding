@@ -18,12 +18,16 @@ interface Drop {
   sway: number;
 }
 
+/** Wishes signed with a name stand out; anonymous ones sit back on plainer paper. */
+export const isAnonymous = (wish: Wish) => !wish.name || wish.name === ANONYMOUS;
+
 export function WishCard({ wish }: { wish: Wish }) {
+  const anonymous = isAnonymous(wish);
   return (
-    <div className="ld-paper-wish">
+    <div className="ld-paper-wish" data-anonymous={anonymous}>
       <p className="ld-paper-wish__message">{wish.message}</p>
       <p className="ld-paper-wish__meta">
-        <strong>{wish.name || ANONYMOUS}</strong>
+        <strong>{anonymous ? ANONYMOUS : wish.name}</strong>
         {wish.side && <span className="ld-paper-wish__side">{wish.side === 'groom' ? 'Nhà trai' : 'Nhà gái'}</span>}
       </p>
     </div>
@@ -103,6 +107,7 @@ export function WishFall({ wishes }: { wishes: Wish[] }) {
             key={d.key}
             className="ld-drop"
             data-held={opened?.key === d.key}
+            data-anonymous={isAnonymous(d.wish)}
             style={{ '--lane': d.lane, '--delay': `${d.delay}s`, '--tilt': d.tilt, '--sway': `${d.sway}s` } as CSSProperties}
             onAnimationEnd={landed(d.key)}
             onClick={() => setOpened(d)}
