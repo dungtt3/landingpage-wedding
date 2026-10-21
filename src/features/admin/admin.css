@@ -1,29 +1,30 @@
-/* /admin — the link maker. Reuses the landing card, form and buttons. */
+/* /admin — the link maker. Reuses the landing card, form and buttons.
+   Classes are `lk-`, never `ad-`: ad blockers hide `.ad-card` and the like. */
 
-.ad {
+.lk {
   min-height: 100vh;
   padding: 32px 16px;
 }
 
-.ad-card {
+.lk-card {
   max-width: 640px;
   padding: 40px var(--ld-gutter);
 }
 
-.ad-title {
+.lk-title {
   margin: 0 0 8px;
   text-align: center;
   font-size: 30px;
   color: var(--ld-accent);
 }
 
-.ad-intro {
+.lk-intro {
   margin: 0 0 24px;
   text-align: center;
   color: var(--ld-ink-soft);
 }
 
-.ad-link {
+.lk-link {
   display: grid;
   gap: 12px;
   margin-top: 24px;
@@ -33,11 +34,11 @@
   box-shadow: inset 0 0 0 1.5px var(--ld-accent);
 }
 
-.ad-link__who {
+.lk-link__who {
   margin: 0;
 }
 
-.ad-link__url {
+.lk-link__url {
   width: 100%;
   min-height: 46px;
   padding: 10px 12px;
@@ -48,29 +49,29 @@
   font: 600 18px/1.3 var(--ld-serif);
 }
 
-.ad-link__actions {
+.lk-link__actions {
   display: flex;
   flex-wrap: wrap;
   gap: 8px;
 }
 
-.ad-link__actions .ld-btn {
+.lk-link__actions .ld-btn {
   min-height: 40px;
   padding: 0 16px;
   font-size: 15px;
 }
 
-.ad-history {
+.lk-history {
   margin-top: 32px;
 }
 
-.ad-history h2 {
+.lk-history h2 {
   margin: 0 0 12px;
   font-size: 18px;
   color: var(--ld-ink-soft);
 }
 
-.ad-history ul {
+.lk-history ul {
   display: grid;
   gap: 10px;
   margin: 0;
@@ -78,7 +79,7 @@
   list-style: none;
 }
 
-.ad-history li {
+.lk-history li {
   display: flex;
   flex-wrap: wrap;
   gap: 10px;
@@ -90,23 +91,23 @@
   box-shadow: inset 0 0 0 1px var(--ld-accent-soft);
 }
 
-.ad-history li > div {
+.lk-history li > div {
   display: grid;
   min-width: 0;
 }
 
-.ad-history li span {
+.lk-history li span {
   font-size: 14px;
   color: var(--ld-ink-soft);
   overflow-wrap: anywhere;
 }
 
 @media (max-width: 600px) {
-  .ad {
+  .lk {
     padding: 0;
   }
 
-  .ad-card {
+  .lk-card {
     min-height: 100vh;
     padding: 28px var(--ld-gutter);
   }

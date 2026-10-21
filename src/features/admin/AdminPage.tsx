@@ -58,7 +58,7 @@ function LinkActions({ link }: { link: string }) {
   };
   const canShare = typeof navigator.share === 'function';
   return (
-    <div className="ad-link__actions">
+    <div className="lk-link__actions">
       <button type="button" className="ld-btn ld-btn--primary" onClick={copy}>
         {copied ? 'Đã sao chép' : 'Sao chép link'}
       </button>
@@ -116,10 +116,10 @@ export function AdminPage() {
   };
 
   return (
-    <main className="ld ad">
-      <div className="ld-card ad-card">
-        <h1 className="ad-title">Tạo link mời</h1>
-        <p className="ad-intro">Nhập tên khách và chọn tiệc. Link ngắn gửi qua Zalo, Messenger vẫn giữ nguyên.</p>
+    <main className="ld lk">
+      <div className="ld-card lk-card">
+        <h1 className="lk-title">Tạo link mời</h1>
+        <p className="lk-intro">Nhập tên khách và chọn tiệc. Link ngắn gửi qua Zalo, Messenger vẫn giữ nguyên.</p>
 
         {!supabaseConfigured && (
           <p className="ld-form__error" role="alert">
@@ -160,17 +160,17 @@ export function AdminPage() {
         </form>
 
         {latest && (
-          <section className="ad-link" aria-live="polite">
-            <p className="ad-link__who">
+          <section className="lk-link" aria-live="polite">
+            <p className="lk-link__who">
               <strong>{latest.name}</strong> · {eventFor(latest.place)?.title}
             </p>
-            <input className="ad-link__url" readOnly value={linkFor(latest.code)} onFocus={(e) => e.currentTarget.select()} />
+            <input className="lk-link__url" readOnly value={linkFor(latest.code)} onFocus={(e) => e.currentTarget.select()} />
             <LinkActions link={linkFor(latest.code)} />
           </section>
         )}
 
         {history.length > 0 && (
-          <section className="ad-history">
+          <section className="lk-history">
             <h2>Đã tạo trên máy này ({history.length})</h2>
             <ul>
               {history.map((item) => (
