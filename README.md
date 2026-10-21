@@ -26,6 +26,10 @@ pre-selects the RSVP side. No or an unknown value falls back to
 (no `place` → "both"); the form itself only asks for the name and yes/no.
 Add `&name=Anh%20Nam` (any letter case, e.g. `Name=`) to greet the guest by
 name inside the opening card ("Kính gửi Anh Nam") and pre-fill the RSVP name.
+Links survive chat apps: params are read leniently, so Zalo's appended
+`?zarsrc=…`, `&amp;` in place of `&`, double percent-encoding and Messenger's
+`fbclid` do not break them. Always send the name percent-encoded (`%20`, not
+a raw space): a raw space ends the link when Zalo/Messenger auto-link it.
 
 **All copy for both parts lives in `src/content/wedding.ts`.** `App.tsx`
 derives the text inside the opening card from it. Landing photos go in `public/assets/landing/`

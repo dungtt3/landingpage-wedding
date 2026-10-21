@@ -236,25 +236,58 @@ export function mainEvent(content: WeddingContent): WeddingEvent {
 }
 
 /**
+ * Query params from an invitation link, read leniently because chat apps mangle
+ * links when they are shared: Zalo can append its own `?zarsrc=…` after ours
+ * (`?place=1?zarsrc=31`), some apps turn `&` into `&amp;`, and links get
+ * percent-encoded twice (`%25C3%25B4`). Keys are lower-cased.
+ */
+function guestParams(search: string): Map<string, string> {
+  const params = new Map<string, string>();
+  const query = search.replace(/^[?#]/, '').replace(/&amp;/gi, '&');
+  for (const [rawKey, rawValue] of new URLSearchParams(query.replace(/\?/g, '&'))) {
+    const key = decodeFully(rawKey).trim().toLowerCase();
+    if (key && !params.has(key)) params.set(key, decodeFully(rawValue));
+  }
+  return params;
+}
+
+/** Undo extra rounds of percent-encoding, leaving the text alone once it stops decoding. */
+function decodeFully(value: string): string {
+  for (let i = 0; i < 3 && /%[0-9a-f]{2}/i.test(value); i++) {
+    try {
+      value = decodeURIComponent(value);
+    } catch {
+      break;
+    }
+  }
+  return value;
+}
+
+/** `?place=` as a number; trailing junk a chat app glued on (`1zarsrc`, `1/`) is ignored. */
+function guestPlace(search: string): number {
+  return parseInt(guestParams(search).get('place') ?? '', 10);
+}
+
+/**
  * The event this guest is invited to, from the invitation link:
  * `?place=1` → bride's side, `?place=2` → groom's side (see `place` on each
  * event). Missing or unknown values fall back to `mainEventId`.
  */
 export function guestEvent(content: WeddingContent, search: string): WeddingEvent {
-  const place = Number(new URLSearchParams(search).get('place'));
+  const place = guestPlace(search);
   return content.events.find((e) => e.place === place) ?? mainEvent(content);
 }
 
 /** The events to show this guest: only theirs with a valid `?place=`, otherwise all of them. */
 export function guestEvents(content: WeddingContent, search: string): WeddingEvent[] {
-  const place = Number(new URLSearchParams(search).get('place'));
+  const place = guestPlace(search);
   const own = content.events.filter((e) => e.place === place);
   return own.length ? own : content.events;
 }
 
 /** Whose guest this is, from `?place=`: that event's side, or 'both' without a valid place. */
 export function guestSide(content: WeddingContent, search: string): 'groom' | 'bride' | 'both' {
-  const place = Number(new URLSearchParams(search).get('place'));
+  const place = guestPlace(search);
   return content.events.find((e) => e.place === place)?.side ?? 'both';
 }
 
@@ -263,10 +296,7 @@ export function guestSide(content: WeddingContent, search: string): 'groom' | 'b
  * tidied and capped at 60 characters; '' when absent.
  */
 export function guestName(search: string): string {
-  for (const [key, value] of new URLSearchParams(search)) {
-    if (key.toLowerCase() === 'name') return value.replace(/\s+/g, ' ').trim().slice(0, 60);
-  }
-  return '';
+  return (guestParams(search).get('name') ?? '').replace(/\s+/g, ' ').trim().slice(0, 60);
 }
 
 /** The same content, with the guest's event as the one everything points at. */

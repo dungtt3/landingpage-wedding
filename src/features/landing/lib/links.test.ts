@@ -53,6 +53,21 @@ describe('landing helpers', () => {
     expect(guestName('?place=1')).toBe('');
   });
 
+  it('survives links mangled by Zalo / Messenger', () => {
+    // Zalo appends its own query with a second `?`.
+    expect(guestEvent(wedding, '?place=1?zarsrc=31&utm_source=zalo').id).toBe('bride-party');
+    expect(guestName('?place=2&name=Anh%20Nam?zarsrc=30')).toBe('Anh Nam');
+    // `&` escaped to `&amp;`.
+    expect(guestName('?place=2&amp;name=Anh%20Nam')).toBe('Anh Nam');
+    expect(guestSide(wedding, '?name=Lan&amp;place=1')).toBe('bride');
+    // Percent-encoded twice.
+    expect(guestName('?name=C%25C3%25B4%2520Lan')).toBe('Cô Lan');
+    // Messenger's fbclid and trailing junk on the number.
+    expect(guestEvent(wedding, '?place=2/&fbclid=IwAR0abc').id).toBe('groom-party');
+    // A literal % that is not an escape stays as typed.
+    expect(guestName('?name=100%25%20vui')).toBe('100% vui');
+  });
+
   it('gives every event a unique place number', () => {
     const places = wedding.events.map((e) => e.place);
     expect(new Set(places).size).toBe(places.length);
