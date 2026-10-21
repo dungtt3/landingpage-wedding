@@ -6,10 +6,13 @@ import {
   adminHasKey,
   adminLogin,
   adminSetKey,
+  deleteGuest,
   listGuests,
+  listRsvps,
   updateGuest,
   type Guest,
   type GuestRow,
+  type RsvpRow,
 } from '../landing/lib/guests';
 import { supabaseConfigured } from '../landing/lib/supabase';
 import { fold, rowsToGuests, type ImportResult } from './importGuests';
@@ -73,9 +76,39 @@ function CopyLinkButton({ code }: { code: string }) {
 type SaveState = 'idle' | 'saving' | 'saved' | 'error';
 
 /** One guest in the list: name and party edited in place, saved when the field is left. */
-function GuestListRow({ row, onSave }: { row: GuestRow; onSave: (code: string, guest: Guest) => Promise<void> }) {
+function GuestListRow({
+  row,
+  onSave,
+  onDelete,
+}: {
+  row: GuestRow;
+  onSave: (code: string, guest: Guest) => Promise<void>;
+  onDelete: (code: string) => Promise<void>;
+}) {
   const [name, setName] = useState(row.name);
   const [state, setState] = useState<SaveState>('idle');
+  // Two taps to delete: the first one only asks.
+  const [confirming, setConfirming] = useState(false);
+
+  useEffect(() => {
+    if (!confirming) return;
+    const timer = window.setTimeout(() => setConfirming(false), 4000);
+    return () => window.clearTimeout(timer);
+  }, [confirming]);
+
+  const remove = async () => {
+    if (!confirming) {
+      setConfirming(true);
+      return;
+    }
+    setConfirming(false);
+    setState('saving');
+    try {
+      await onDelete(row.code);
+    } catch {
+      setState('error');
+    }
+  };
 
   useEffect(() => setName(row.name), [row.name]);
 
@@ -116,6 +149,14 @@ function GuestListRow({ row, onSave }: { row: GuestRow; onSave: (code: string, g
         <small aria-live="polite">{state === 'saving' ? 'Đang lưu…' : state === 'saved' ? 'Đã lưu' : state === 'error' ? 'Lỗi, thử lại' : ''}</small>
       </span>
       <CopyLinkButton code={row.code} />
+      <button
+        type="button"
+        className={confirming ? 'ld-btn ld-btn--primary lk-delete' : 'ld-btn ld-btn--ghost lk-delete'}
+        aria-label={confirming ? `Chắc chắn xoá ${row.name}` : `Xoá ${row.name}`}
+        onClick={remove}
+      >
+        {confirming ? 'Xoá thật?' : 'Xoá'}
+      </button>
     </li>
   );
 }
@@ -259,7 +300,10 @@ function ExcelImport({ existing, onAdd }: { existing: GuestRow[]; onAdd: (guests
       <h2>Nhập từ Excel</h2>
       <p className="lk-hint">
         Cột <strong>Tên</strong> (hoặc “Họ và tên”) và cột <strong>Bên</strong> (“Nhà trai”/“Nhà gái” hoặc 2/1). Không có tiêu đề thì cột A là tên,
-        cột B là bên.
+        cột B là bên.{' '}
+        <a href="/mau-danh-sach-khach.xlsx" download="mau-danh-sach-khach.xlsx">
+          Tải file Excel mẫu
+        </a>
       </p>
       <div className="lk-import__controls">
         <input
@@ -318,8 +362,142 @@ function ExcelImport({ existing, onAdd }: { existing: GuestRow[]; onAdd: (guests
   );
 }
 
-/** The guest list once signed in. */
+/** Tab 1: add guests (by hand or from Excel) and the list itself. */
+function GuestTab({
+  rows,
+  loadError,
+  query,
+  setQuery,
+  shown,
+  add,
+  save,
+  remove,
+}: {
+  rows: GuestRow[] | null;
+  loadError: boolean;
+  query: string;
+  setQuery: (query: string) => void;
+  shown: GuestRow[];
+  add: (guests: Guest[]) => Promise<void>;
+  save: (code: string, guest: Guest) => Promise<void>;
+  remove: (code: string) => Promise<void>;
+}) {
+  return (
+    <>
+      <AddGuestForm onAdd={add} />
+      <ExcelImport existing={rows ?? []} onAdd={add} />
+
+    <section className="lk-list">
+      <div className="lk-list__head">
+        <h2>Danh sách khách {rows && `(${query ? `${shown.length}/` : ''}${rows.length})`}</h2>
+        <input type="search" className="lk-search" placeholder="Tìm theo tên…" aria-label="Tìm theo tên" value={query} onChange={(e) => setQuery(e.target.value)} />
+      </div>
+      {loadError && (
+        <p className="ld-form__error" role="alert">
+          Không tải được danh sách, tải lại trang nhé.
+        </p>
+      )}
+      {!rows && !loadError && <p className="lk-hint">Đang tải…</p>}
+      {rows && !shown.length && <p className="lk-hint">{query ? 'Không có khách nào khớp.' : 'Chưa có khách nào.'}</p>}
+      <ul className="lk-rows">
+        {shown.map((row) => (
+          <GuestListRow key={row.code} row={row} onSave={save} onDelete={remove} />
+        ))}
+      </ul>
+    </section>
+    </>
+  );
+}
+
+const SIDE_LABEL: Record<RsvpRow['side'], string> = { groom: 'Nhà trai', bride: 'Nhà gái', both: 'Không rõ bên' };
+
+/** "23/10 19:30", in the viewer's time zone. */
+function timeLabel(iso: string): string {
+  const d = new Date(iso);
+  const two = (n: number) => String(n).padStart(2, '0');
+  return `${two(d.getDate())}/${two(d.getMonth() + 1)} ${two(d.getHours())}:${two(d.getMinutes())}`;
+}
+
+/** Tab 2: the RSVPs sent from the page: who is coming, per side, newest first. */
+function RsvpPanel({ adminKey, onKeyError }: { adminKey: string; onKeyError: () => void }) {
+  const [rows, setRows] = useState<RsvpRow[] | null>(null);
+  const [loadError, setLoadError] = useState(false);
+  const [filter, setFilter] = useState<'yes' | 'no' | 'all'>('yes');
+  const [query, setQuery] = useState('');
+
+  useEffect(() => {
+    listRsvps(adminKey)
+      .then(setRows)
+      .catch((err) => {
+        if (err instanceof AdminKeyError) onKeyError();
+        else setLoadError(true);
+      });
+  }, [adminKey, onKeyError]);
+
+  const shown = useMemo(() => {
+    const q = fold(query.trim());
+    return (rows ?? []).filter((r) => (filter === 'all' || r.attending === filter) && (!q || fold(r.name).includes(q)));
+  }, [rows, filter, query]);
+
+  if (loadError) {
+    return (
+      <p className="ld-form__error" role="alert">
+        Không tải được danh sách xác nhận, tải lại trang nhé.
+      </p>
+    );
+  }
+  if (!rows) return <p className="lk-hint">Đang tải…</p>;
+
+  const coming = rows.filter((r) => r.attending === 'yes');
+  const perSide = (side: RsvpRow['side']) => coming.filter((r) => r.side === side).length;
+  const filters = [
+    ['yes', 'Sẽ đến'],
+    ['no', 'Không đến'],
+    ['all', 'Tất cả'],
+  ] as const;
+
+  return (
+    <section className="lk-list">
+      <div className="lk-stats">
+        <p>
+          <strong>{coming.length}</strong> người sẽ đến
+          <small>
+            Nhà trai {perSide('groom')} · Nhà gái {perSide('bride')}
+            {perSide('both') > 0 && ` · Không rõ bên ${perSide('both')}`}
+          </small>
+        </p>
+        <p>
+          <strong>{rows.length - coming.length}</strong> người không đến được
+        </p>
+      </div>
+      <div className="lk-list__head">
+        <div className="lk-filter" role="group" aria-label="Lọc">
+          {filters.map(([value, label]) => (
+            <button key={value} type="button" aria-pressed={filter === value} onClick={() => setFilter(value)}>
+              {label}
+            </button>
+          ))}
+        </div>
+        <input type="search" className="lk-search" placeholder="Tìm theo tên…" aria-label="Tìm theo tên" value={query} onChange={(e) => setQuery(e.target.value)} />
+      </div>
+      {!shown.length && <p className="lk-hint">{rows.length ? 'Không có ai khớp.' : 'Chưa có ai xác nhận.'}</p>}
+      <ul className="lk-rows">
+        {shown.map((r) => (
+          <li key={r.id} className="lk-rsvp">
+            <strong>{r.name}</strong>
+            <span>{SIDE_LABEL[r.side]}</span>
+            <span className={r.attending === 'yes' ? 'lk-badge lk-badge--yes' : 'lk-badge'}>{r.attending === 'yes' ? 'Sẽ đến' : 'Không đến'}</span>
+            <time dateTime={r.created_at}>{timeLabel(r.created_at)}</time>
+          </li>
+        ))}
+      </ul>
+    </section>
+  );
+}
+
+/** Signed in: the two tabs. */
 function GuestManager({ adminKey, onSignOut }: { adminKey: string; onSignOut: () => void }) {
+  const [tab, setTab] = useState<'guests' | 'rsvps'>('guests');
   const [rows, setRows] = useState<GuestRow[] | null>(null);
   const [loadError, setLoadError] = useState(false);
   const [query, setQuery] = useState('');
@@ -348,6 +526,11 @@ function GuestManager({ adminKey, onSignOut }: { adminKey: string; onSignOut: ()
     setRows((current) => current?.map((row) => (row.code === code ? updated : row)) ?? null);
   };
 
+  const remove = async (code: string) => {
+    await deleteGuest(adminKey, code).catch(handle);
+    setRows((current) => current?.filter((row) => row.code !== code) ?? null);
+  };
+
   const shown = useMemo(() => {
     const q = fold(query.trim());
     return q ? (rows ?? []).filter((row) => fold(row.name).includes(q) || row.code.includes(q)) : (rows ?? []);
@@ -355,27 +538,20 @@ function GuestManager({ adminKey, onSignOut }: { adminKey: string; onSignOut: ()
 
   return (
     <>
-      <AddGuestForm onAdd={add} />
-      <ExcelImport existing={rows ?? []} onAdd={add} />
+      <div className="lk-tabs" role="tablist">
+        <button type="button" role="tab" aria-selected={tab === 'guests'} onClick={() => setTab('guests')}>
+          Khách mời{rows && ` (${rows.length})`}
+        </button>
+        <button type="button" role="tab" aria-selected={tab === 'rsvps'} onClick={() => setTab('rsvps')}>
+          Xác nhận tham dự
+        </button>
+      </div>
 
-      <section className="lk-list">
-        <div className="lk-list__head">
-          <h2>Danh sách khách {rows && `(${query ? `${shown.length}/` : ''}${rows.length})`}</h2>
-          <input type="search" className="lk-search" placeholder="Tìm theo tên…" aria-label="Tìm theo tên" value={query} onChange={(e) => setQuery(e.target.value)} />
-        </div>
-        {loadError && (
-          <p className="ld-form__error" role="alert">
-            Không tải được danh sách, tải lại trang nhé.
-          </p>
-        )}
-        {!rows && !loadError && <p className="lk-hint">Đang tải…</p>}
-        {rows && !shown.length && <p className="lk-hint">{query ? 'Không có khách nào khớp.' : 'Chưa có khách nào.'}</p>}
-        <ul className="lk-rows">
-          {shown.map((row) => (
-            <GuestListRow key={row.code} row={row} onSave={save} />
-          ))}
-        </ul>
-      </section>
+      {tab === 'rsvps' ? (
+        <RsvpPanel adminKey={adminKey} onKeyError={onSignOut} />
+      ) : (
+        <GuestTab rows={rows} loadError={loadError} query={query} setQuery={setQuery} shown={shown} add={add} save={save} remove={remove} />
+      )}
 
       <p className="lk-signout">
         <button type="button" className="ld-btn ld-btn--ghost" onClick={onSignOut}>
@@ -388,8 +564,9 @@ function GuestManager({ adminKey, onSignOut }: { adminKey: string; onSignOut: ()
 
 /**
  * `/admin`: behind a password, the guest list. Add guests by hand or from an
- * Excel sheet, edit names and parties in place, copy each guest's short
- * `/g/<code>` link (safe to send through Zalo / Messenger).
+ * Excel sheet, edit names and parties in place, delete them, copy each guest's
+ * short `/g/<code>` link (safe to send through Zalo / Messenger); a second tab
+ * lists the RSVPs.
  */
 export function AdminPage() {
   const [adminKey, setAdminKey] = useState(storedKey);

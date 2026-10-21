@@ -1,3 +1,4 @@
+import { readSheet } from 'read-excel-file/node';
 import { describe, expect, it } from 'vitest';
 import { wedding } from '../../content/wedding';
 import { fold, placeFromCell, rowsToGuests } from './importGuests';
@@ -52,5 +53,17 @@ describe('Excel guest import', () => {
   it('uses the chosen party when the sheet has only names', () => {
     const { guests } = rowsToGuests([['Tên khách'], ['Anh Nam']], events, GROOM);
     expect(guests).toEqual([{ name: 'Anh Nam', place: GROOM, line: 2 }]);
+  });
+
+  it('reads the sample file offered for download', async () => {
+    const rows = await readSheet('public/mau-danh-sach-khach.xlsx');
+    const { guests, errors } = rowsToGuests(rows, events, GROOM);
+    expect(errors).toEqual([]);
+    expect(guests.map((g) => [g.name, g.place])).toEqual([
+      ['Anh Nam', GROOM],
+      ['Cô Lan', BRIDE],
+      ['Gia đình chú Hùng', GROOM],
+      ['Chị Hoa', BRIDE],
+    ]);
   });
 });

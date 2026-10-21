@@ -25,11 +25,13 @@ Excel `.xlsx` (a "Tên"/"Họ và tên" column and a "Bên" column with "Nhà
 trai"/"Nhà gái" or 2/1; without titles column A is the name, B the party;
 names already in the list are skipped). Edit names and parties in place,
 search by name (accents ignored), and copy each guest's `/g/<code>` link
-(6 letters). The page looks the code up in Supabase before it renders and then
+(6 letters), or delete a guest (two taps). A sample sheet is at
+`/mau-danh-sach-khach.xlsx`. A second tab lists the RSVPs: who is coming, per
+side, filterable and searchable. The page looks the code up in Supabase before it renders and then
 behaves like `?place=&name=` below; an unknown code shows the generic card.
 The `guests` table is closed to the public key: guests can only look up one
 code (`guest_by_code`), and every list/add/edit function checks the password
-(migrations `20261022000000_guest_links.sql`, `20261023000000_guest_admin.sql`).
+(migrations `20261022000000_guest_links.sql`, `20261023000000_guest_admin.sql`, `20261024000000_admin_delete_rsvps.sql`).
 
 **Guest links:** add `?place=1` (nhà gái, 01.11.2026 16:00) or `?place=2`
 (nhà trai, 03.11.2026 11:00) to the invitation link. It selects the party

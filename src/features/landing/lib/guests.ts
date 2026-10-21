@@ -108,3 +108,18 @@ export async function updateGuest(key: string, code: string, guest: Guest): Prom
   if (!row) throw new Error(`No guest ${code}`);
   return row;
 }
+
+/** Removes a guest; their link then shows the generic invitation. */
+export const deleteGuest = (key: string, code: string) => adminRpc<boolean>('admin_delete_guest', { p_key: key, p_code: code });
+
+/** An RSVP as /admin lists them (the form only asks for the name and yes/no). */
+export interface RsvpRow {
+  id: string;
+  created_at: string;
+  name: string;
+  attending: 'yes' | 'no';
+  side: 'groom' | 'bride' | 'both';
+}
+
+/** Every RSVP, newest first. */
+export const listRsvps = (key: string) => adminRpc<RsvpRow[]>('admin_list_rsvps', { p_key: key });
