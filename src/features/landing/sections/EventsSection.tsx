@@ -1,5 +1,6 @@
 import { guestEvents, sectionIds, type WeddingContent } from '../../../content/wedding';
 import { SectionHeading } from '../components/SectionHeading';
+import { guestSearch } from '../lib/guests';
 import { googleCalendarUrl, mapsUrl } from '../lib/links';
 
 /** Line icons for the event buttons (24×24, stroke = currentColor). */
@@ -19,7 +20,7 @@ function ButtonIcon({ name }: { name: keyof typeof ICONS }) {
 export function EventsSection({ content }: { content: WeddingContent }) {
   const couple = `${content.groom.shortName} & ${content.bride.shortName}`;
   // `?place=` invites the guest to one party only: show just that one, larger.
-  const events = guestEvents(content, window.location.search);
+  const events = guestEvents(content, guestSearch());
   const single = events.length === 1;
   return (
     <section id={sectionIds.events} className="ld-section ld-section--tint" aria-labelledby="ld-events-title">

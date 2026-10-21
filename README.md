@@ -18,6 +18,15 @@ React + TypeScript + GSAP online wedding invitation, in two parts:
 > `StorybookExperience.tsx` and the scene engine) is no longer used by `App.tsx`.
 > The code is kept: render `<StorybookExperience>` in `App.tsx` again to bring it back.
 
+**Short guest links (recommended):** open `/admin`, type the guest's name and
+pick the party, and it makes `/g/<code>` (6 letters). The code is looked up
+in Supabase (`guests` table, migration `20261022000000_guest_links.sql`)
+before the page renders and works exactly like `?place=&name=` below; an
+unknown code shows the generic card. The table is closed to the public key:
+the site only calls `create_guest()` and `guest_by_code()`, so nobody can list
+the guests. `/admin` itself has no password (a link it makes can say no more
+than a hand-written `?name=` link could); it is just not linked anywhere.
+
 **Guest links:** add `?place=1` (nhà gái, 01.11.2026 16:00) or `?place=2`
 (nhà trai, 03.11.2026 11:00) to the invitation link. It selects the party
 the countdown, hero date, finale card and opening card point at, and

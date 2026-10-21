@@ -20,11 +20,11 @@ const TIMEOUT_MS = 12000;
 
 export const supabaseConfigured = Boolean(url && key);
 
-export async function rest<T>(path: string, init: RequestInit & { prefer?: string } = {}): Promise<T> {
+export async function rest<T>(path: string, init: RequestInit & { prefer?: string; timeoutMs?: number } = {}): Promise<T> {
   if (!url || !key) throw new Error('Supabase is not configured');
-  const { prefer, headers, ...rest } = init;
+  const { prefer, timeoutMs = TIMEOUT_MS, headers, ...rest } = init;
   const controller = new AbortController();
-  const timer = window.setTimeout(() => controller.abort(), TIMEOUT_MS);
+  const timer = window.setTimeout(() => controller.abort(), timeoutMs);
   const res = await fetch(`${url}/rest/v1/${path}`, {
     ...rest,
     signal: controller.signal,

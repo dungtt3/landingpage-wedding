@@ -33,6 +33,8 @@
     }
   ],
   "rewrites": [
+    { "source": "/g/:code*", "destination": "/index.html" },
+    { "source": "/admin", "destination": "/index.html" },
     {
       "source": "/sb/:path*",
       "destination": "https://anzqmoxpihlrtlpvrpbw.supabase.co/:path*"

@@ -2,6 +2,7 @@ import { useState, type FormEvent } from 'react';
 import { guestName, guestSide, sectionIds, type WeddingContent } from '../../../content/wedding';
 import { Expandable } from '../components/Expandable';
 import { SectionHeading } from '../components/SectionHeading';
+import { guestSearch } from '../lib/guests';
 import { submitRsvp, type RsvpPayload } from '../lib/rsvp';
 import { supabaseConfigured } from '../lib/supabase';
 
@@ -17,7 +18,7 @@ export function RsvpSection({ content }: { content: WeddingContent }) {
     const payload: RsvpPayload = {
       name: String(data.get('name') ?? '').trim(),
       attending,
-      side: guestSide(content, window.location.search),
+      side: guestSide(content, guestSearch()),
     };
     setStatus('sending');
     try {
@@ -45,7 +46,7 @@ export function RsvpSection({ content }: { content: WeddingContent }) {
             <form className="ld-form" onSubmit={onSubmit}>
               <label className="ld-field ld-field--wide">
                 <span>Họ và tên</span>
-                <input name="name" required autoComplete="name" maxLength={80} defaultValue={guestName(window.location.search)} />
+                <input name="name" required autoComplete="name" maxLength={80} defaultValue={guestName(guestSearch())} />
               </label>
               <fieldset className="ld-field ld-field--wide ld-choice">
                 <legend>Bạn sẽ đến chứ?</legend>

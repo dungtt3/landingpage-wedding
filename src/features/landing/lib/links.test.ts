@@ -1,5 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { forGuest, guestEvent, guestEvents, guestName, guestSide, mainEvent, wedding } from '../../../content/wedding';
+import { guestCodeFromPath, searchForGuest } from './guests';
 import { countdownParts, googleCalendarUrl, mapsUrl, toCalendarStamp, youtubeId } from './links';
 
 describe('landing helpers', () => {
@@ -66,6 +67,20 @@ describe('landing helpers', () => {
     expect(guestEvent(wedding, '?place=2/&fbclid=IwAR0abc').id).toBe('groom-party');
     // A literal % that is not an escape stays as typed.
     expect(guestName('?name=100%25%20vui')).toBe('100% vui');
+  });
+
+  it('reads the code from a /g/<code> link, ignoring what chat apps glue on', () => {
+    expect(guestCodeFromPath('/g/ab3kx9')).toBe('ab3kx9');
+    expect(guestCodeFromPath('/g/AB3KX9/')).toBe('ab3kx9');
+    expect(guestCodeFromPath('/g/ab3kx9.')).toBe('ab3kx9');
+    expect(guestCodeFromPath('/g/ab3')).toBeNull();
+    expect(guestCodeFromPath('/admin')).toBeNull();
+  });
+
+  it('turns a looked-up guest into the query the guest helpers read', () => {
+    const search = searchForGuest({ name: 'Cô Lan & chú Hùng', place: 1 });
+    expect(guestName(search)).toBe('Cô Lan & chú Hùng');
+    expect(guestEvent(wedding, search).id).toBe('bride-party');
   });
 
   it('gives every event a unique place number', () => {
