@@ -70,11 +70,41 @@ export async function resolveGuestLink(pathname: string): Promise<void> {
   }
 }
 
-/** Saves a guest (used by /admin) and returns the code for their `/g/<code>` link. */
-export async function createGuest(guest: Guest): Promise<string> {
+/** A guest as /admin lists them. */
+export interface GuestRow extends Guest {
+  code: string;
+  created_at: string;
+}
+
+/** Thrown by the admin calls when the password is wrong (or was changed). */
+export class AdminKeyError extends Error {}
+
+async function adminRpc<T>(fn: string, args: Record<string, unknown>): Promise<T> {
   if (!supabaseConfigured) throw new Error('Supabase is not configured');
-  return rest<string>('rpc/create_guest', {
-    method: 'POST',
-    body: JSON.stringify({ p_name: guest.name, p_place: guest.place }),
-  });
+  try {
+    return await rest<T>(`rpc/${fn}`, { method: 'POST', body: JSON.stringify(args) });
+  } catch (err) {
+    if (err instanceof Error && err.message.includes('invalid admin key')) throw new AdminKeyError('Sai mật khẩu');
+    throw err;
+  }
+}
+
+/** Whether an /admin password has been chosen yet (the first visit sets it). */
+export const adminHasKey = () => adminRpc<boolean>('admin_has_key', {});
+
+/** Sets the /admin password; only works the very first time. */
+export const adminSetKey = (key: string) => adminRpc<void>('admin_set_key', { p_new: key });
+
+export const adminLogin = (key: string) => adminRpc<boolean>('admin_login', { p_key: key });
+
+/** Every guest, newest first. */
+export const listGuests = (key: string) => adminRpc<GuestRow[]>('admin_list_guests', { p_key: key });
+
+/** Adds guests (one from the form, or a whole Excel sheet) and returns them with their new codes. */
+export const addGuests = (key: string, guests: Guest[]) => adminRpc<GuestRow[]>('admin_add_guests', { p_key: key, p_guests: guests });
+
+export async function updateGuest(key: string, code: string, guest: Guest): Promise<GuestRow> {
+  const [row] = await adminRpc<GuestRow[]>('admin_update_guest', { p_key: key, p_code: code, p_name: guest.name, p_place: guest.place });
+  if (!row) throw new Error(`No guest ${code}`);
+  return row;
 }

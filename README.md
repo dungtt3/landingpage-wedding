@@ -18,14 +18,18 @@ React + TypeScript + GSAP online wedding invitation, in two parts:
 > `StorybookExperience.tsx` and the scene engine) is no longer used by `App.tsx`.
 > The code is kept: render `<StorybookExperience>` in `App.tsx` again to bring it back.
 
-**Short guest links (recommended):** open `/admin`, type the guest's name and
-pick the party, and it makes `/g/<code>` (6 letters). The code is looked up
-in Supabase (`guests` table, migration `20261022000000_guest_links.sql`)
-before the page renders and works exactly like `?place=&name=` below; an
-unknown code shows the generic card. The table is closed to the public key:
-the site only calls `create_guest()` and `guest_by_code()`, so nobody can list
-the guests. `/admin` itself has no password (a link it makes can say no more
-than a hand-written `?name=` link could); it is just not linked anywhere.
+**Short guest links (recommended):** `/admin` is the guest list, behind a
+password chosen on the first visit (forgot it: `delete from public.admin_settings;`
+in the SQL Editor, then open `/admin` again). Add guests one by one or from an
+Excel `.xlsx` (a "Tên"/"Họ và tên" column and a "Bên" column with "Nhà
+trai"/"Nhà gái" or 2/1; without titles column A is the name, B the party;
+names already in the list are skipped). Edit names and parties in place,
+search by name (accents ignored), and copy each guest's `/g/<code>` link
+(6 letters). The page looks the code up in Supabase before it renders and then
+behaves like `?place=&name=` below; an unknown code shows the generic card.
+The `guests` table is closed to the public key: guests can only look up one
+code (`guest_by_code`), and every list/add/edit function checks the password
+(migrations `20261022000000_guest_links.sql`, `20261023000000_guest_admin.sql`).
 
 **Guest links:** add `?place=1` (nhà gái, 01.11.2026 16:00) or `?place=2`
 (nhà trai, 03.11.2026 11:00) to the invitation link. It selects the party

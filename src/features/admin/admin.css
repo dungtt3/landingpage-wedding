@@ -1,13 +1,14 @@
-/* /admin — the link maker. Reuses the landing card, form and buttons.
+/* /admin — the guest list. Reuses the landing card, form and buttons.
    Classes are `lk-`, never `ad-`: ad blockers hide `.ad-card` and the like. */
 
 .lk {
   min-height: 100vh;
   padding: 32px 16px;
+  font-size: 17px;
 }
 
 .lk-card {
-  max-width: 640px;
+  max-width: 920px;
   padding: 40px var(--ld-gutter);
 }
 
@@ -24,82 +25,191 @@
   color: var(--ld-ink-soft);
 }
 
-.lk-link {
-  display: grid;
-  gap: 12px;
-  margin-top: 24px;
-  padding: 20px;
-  border-radius: 18px;
-  background: var(--ld-card);
-  box-shadow: inset 0 0 0 1.5px var(--ld-accent);
+.lk-gate {
+  max-width: 440px;
+  margin: 0 auto;
 }
 
-.lk-link__who {
-  margin: 0;
+.lk h2 {
+  margin: 0 0 10px;
+  font-size: 20px;
+  color: var(--ld-ink);
 }
 
-.lk-link__url {
-  width: 100%;
-  min-height: 46px;
-  padding: 10px 12px;
+.lk-hint {
+  margin: 0 0 12px;
+  font-size: 15px;
+  color: var(--ld-ink-soft);
+}
+
+.lk-ok {
+  margin: 8px 0 0;
+  color: #2f6b3a;
+}
+
+/* Inputs and selects outside `.ld-field`. */
+.lk-add input,
+.lk select,
+.lk-search,
+.lk-row__name {
+  min-height: 42px;
+  padding: 8px 10px;
   border: 1px solid rgba(61, 43, 47, 0.22);
   border-radius: 10px;
   background: #fff;
   color: var(--ld-ink);
-  font: 600 18px/1.3 var(--ld-serif);
+  font: 16px/1.3 var(--ld-serif);
 }
 
-.lk-link__actions {
+.lk .ld-btn {
+  min-height: 42px;
+  padding: 0 16px;
+  font-size: 15px;
+  white-space: nowrap;
+}
+
+/* ------------------------------------------------------------ add, import */
+
+.lk-add {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto auto;
+  gap: 8px;
+  margin-bottom: 24px;
+}
+
+.lk-add .ld-form__error {
+  grid-column: 1 / -1;
+  margin: 0;
+}
+
+.lk-import {
+  margin-bottom: 28px;
+  padding: 18px;
+  border-radius: 16px;
+  background: var(--ld-card);
+  box-shadow: inset 0 0 0 1px var(--ld-accent-soft);
+}
+
+.lk-import__controls {
   display: flex;
   flex-wrap: wrap;
-  gap: 8px;
-}
-
-.lk-link__actions .ld-btn {
-  min-height: 40px;
-  padding: 0 16px;
+  gap: 10px 20px;
+  align-items: center;
   font-size: 15px;
 }
 
-.lk-history {
-  margin-top: 32px;
+.lk-import__controls input[type='file'] {
+  max-width: 100%;
+  font: inherit;
 }
 
-.lk-history h2 {
+.lk-preview {
+  margin-top: 14px;
+  padding-top: 14px;
+  border-top: 1px dashed var(--ld-accent-soft);
+}
+
+.lk-preview p {
+  margin: 0 0 10px;
+}
+
+.lk-preview__errors {
+  max-height: 160px;
   margin: 0 0 12px;
-  font-size: 18px;
-  color: var(--ld-ink-soft);
+  padding-left: 20px;
+  overflow: auto;
+  font-size: 14px;
+  color: var(--ld-accent);
 }
 
-.lk-history ul {
+.lk-preview__actions {
+  display: flex;
+  gap: 8px;
+}
+
+/* ------------------------------------------------------------------ list */
+
+.lk-list__head {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 16px;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+
+.lk-list__head h2 {
+  margin: 0;
+}
+
+.lk-search {
+  flex: 1 1 220px;
+  max-width: 320px;
+}
+
+.lk-rows {
   display: grid;
-  gap: 10px;
+  gap: 8px;
   margin: 0;
   padding: 0;
   list-style: none;
 }
 
-.lk-history li {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
+.lk-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 215px 110px auto;
+  gap: 8px;
   align-items: center;
-  justify-content: space-between;
-  padding: 12px 14px;
-  border-radius: 14px;
+  padding: 8px 10px;
+  border-radius: 12px;
   background: var(--ld-card);
   box-shadow: inset 0 0 0 1px var(--ld-accent-soft);
 }
 
-.lk-history li > div {
-  display: grid;
-  min-width: 0;
+.lk-row[data-state='saved'] {
+  box-shadow: inset 0 0 0 1.5px #5c9a68;
 }
 
-.lk-history li span {
+.lk-row[data-state='error'] {
+  box-shadow: inset 0 0 0 1.5px var(--ld-accent);
+}
+
+.lk-row__code {
+  display: grid;
   font-size: 14px;
   color: var(--ld-ink-soft);
-  overflow-wrap: anywhere;
+  font-variant-numeric: tabular-nums;
+}
+
+.lk-row__code small {
+  min-height: 1.2em;
+  font-size: 12px;
+}
+
+.lk-copy {
+  min-width: 104px;
+}
+
+.lk-signout {
+  margin: 28px 0 0;
+  text-align: center;
+}
+
+@media (max-width: 720px) {
+  .lk-row {
+    grid-template-columns: minmax(0, 1fr) auto;
+  }
+
+  .lk-row__name {
+    grid-column: 1 / -1;
+  }
+
+  .lk-row__code {
+    grid-column: 1 / -1;
+    grid-row: 3;
+    grid-auto-flow: column;
+    justify-content: space-between;
+  }
 }
 
 @media (max-width: 600px) {
@@ -110,5 +220,13 @@
   .lk-card {
     min-height: 100vh;
     padding: 28px var(--ld-gutter);
+  }
+
+  .lk-add {
+    grid-template-columns: minmax(0, 1fr) auto;
+  }
+
+  .lk-add input {
+    grid-column: 1 / -1;
   }
 }
